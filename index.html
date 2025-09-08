@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCU 동아리 - 대구가톨릭대학교 동아리 소개</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background: #fafbfc;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 0 6rem;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .university-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .university-name {
+            font-size: 1rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+        
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.85;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background: white;
+            margin: -4rem auto 4rem;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            position: relative;
+            max-width: 700px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+            font-size: 1rem;
+            border: 2px solid #f1f5f9;
+            border-radius: 16px;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f8fafc;
+            font-family: inherit;
+        }
+        
+        .search-box:focus {
+            border-color: #2c5aa0;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+        
+        .filter-tag {
+            padding: 0.7rem 1.5rem;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: inherit;
+            border: 2px solid transparent;
+        }
+        
+        .filter-tag:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+        }
+        
+        .filter-tag.active {
+            background: #2c5aa0;
+            color: white;
+            box-shadow: 0 4px 20px rgba(44, 90, 160, 0.3);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin: 4rem 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+        
+        .section-description {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Club Grid */
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .club-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .club-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        
+        .club-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2c5aa0, #1e3a8a);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .club-card:hover::before {
+            opacity: 1;
+        }
+        
+        .club-header {
+            padding: 2rem 2rem 1rem;
+            position: relative;
+        }
+        
+        .club-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(44, 90, 160, 0.3);
+        }
+        
+        .club-category {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(44, 90, 160, 0.1);
+            color: #2c5aa0;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+        }
+        
+        .club-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .club-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .club-footer {
+            padding: 0 2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .club-members {
+            display: flex;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .club-members::before {
+            content: '👥';
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .club-status {
+            background: #10b981;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-message {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-submessage {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            color: #94a3b8;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 6rem;
+        }
+        
+        .footer-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .footer-content strong {
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .search-section {
+                margin: -3rem 1rem 3rem;
+                padding: 2rem;
+            }
+            
+            .clubs-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .filter-container {
+                justify-content: flex-start;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .club-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .club-card:nth-child(1) { animation-delay: 0.1s; }
+        .club-card:nth-child(2) { animation-delay: 0.2s; }
+        .club-card:nth-child(3) { animation-delay: 0.3s; }
+        .club-card:nth-child(4) { animation-delay: 0.4s; }
+        .club-card:nth-child(5) { animation-delay: 0.5s; }
+        .club-card:nth-child(6) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="university-logo">🎓</div>
+                <div class="university-name">DAEGU CATHOLIC UNIVERSITY</div>
+                <h1 class="main-title">DCU 동아리</h1>
+                <p class="subtitle">함께 성장하고 꿈을 키워나가는 특별한 공간을 만나보세요</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <input type="text" class="search-box" placeholder="관심있는 동아리를 검색해보세요..." id="searchInput">
+            </div>
+            <div class="filter-container">
+                <button class="filter-tag active" data-category="all">전체</button>
+                <button class="filter-tag" data-category="academic">학술</button>
+                <button class="filter-tag" data-category="sports">체육</button>
+                <button class="filter-tag" data-category="art">예술</button>
+                <button class="filter-tag" data-category="volunteer">봉사</button>
+                <button class="filter-tag" data-category="hobby">취미</button>
+                <button class="filter-tag" data-category="religion">종교</button>
+            </div>
+        </section>
+
+        <section class="main-content">
+            <div class="section-header">
+                <h2 class="section-title">동아리 둘러보기</h2>
+                <p class="section-description">다양한 분야의 동아리에서 새로운 도전과 경험을 해보세요</p>
+            </div>
+            
+            <div class="clubs-grid" id="clubsGrid">
+                <div class="club-card" data-category="academic">
+                    <div class="club-image">
+                        <div class="club-image-placeholder">💻</div>
+                        <!-- 실제 사용시: <img src="images/coding-club.jpg" alt="DCU 개발자 모임"> -->
+                    </div>
+                    <div class="club-header">
+                        <div class="club-icon">💻</div>
+                        <span class="club-category">학술</span>
+                        <h3 class="club-name">DCU 개발자 모임</h3>
+                        <p class="club-description">최신 기술 트렌드를 공유하고 함께 프로젝트를 개발하며 성장하는 개발자 커뮤니티입니다. 웹, 앱, AI 등 다양한 분야를 다룹니다.</p>
+                    </div>
+                    <div class="club-footer">
+                        <div class="club-members">32명</div>
+                        <span class="club-status">모집중</span>
+                    </div>
+                </div>
+
+                <div class="club-card" data-category="sports">
+                    <div class="club-image">
+                        <div class="club-image-placeholder">⚽</div>
+                        <!-- 실제 사용시: <img src="images/football-club.jpg" alt="DCU United FC"> -->
+                    </div>
+                    <div class="club-header">
+                        <div class="club-icon">⚽</div>
+                        <span class="club-category">체육</span>
+                        <h3 class="club-name">DCU United FC</h3>
+                        <p class="club-description">축구를 사랑하는 학생들이 모여 실력 향상과 팀워크를 기르는 축구 동아리입니다. 정기 훈련과 친선경기를 진행합니다.</p>
+                    </div>
+                    <div class="club-footer">
+                        <div class="club-members">28명</div>
+                        <span class="club-status">모집중</span>
+                    </div>
+                </div>
+
+                <div class="club-card" data-category="art">
+                    <div class="club-image">
+                        <div class="club-image-placeholder">🎨</div>
+                        <!-- 실제 사용시: <img src="images/art-club.jpg" alt="크리에이티브 스튜디오"> -->
+                    </div>
+                    <div class="club-header">
+                        <div class="club-icon">🎨</div>
+                        <span class="club-category">예술</span>
+                        <h3 class="club-name">크리에이티브 스튜디오</h3>
+                        <p class="club-description">그래픽 디자인, 일러스트, 영상 제작 등 시각 예술 전반을 다루며 창의적 작업을 함께 하는 아트 동아리입니다.</p>
+                    </div>
+                    <div class="club-footer">
+                        <div class="club-members">24명</div>
+                        <span class="club-status">모집중</span>
+                    </div>
+                </div>
+
+                <div class="club-card" data-category="volunteer">
+                    <div class="club-image">
+                        <div class="club-image-placeholder">🤝</div>
+                        <!-- 실제 사용시: <img src="images/volunteer-club.jpg" alt="따뜻한 손길"> -->
+                    </div>
+                    <div class="club-header">
+                        <div class="club-icon">🤝</div>
+                        <span class="club-category">봉사</span>
+                        <h3 class="club-name">따뜻한 손길</h3>
+                        <p class="club-description">지역사회와 함께하는 다양한 봉사활동을 통해 나눔의 가치를 실천하고 소외된 이웃에게 희망을 전하는 봉사 동아리입니다.</p>
+                    </div>
+                    <div class="club-footer">
+                        <div class="club-members">45명</div>
+                        <span class="club-status">모집중</span>
+                    </div>
+                </div>
+
+                <div class="club-card" data-category="hobby">
+                    <div class="club-image">
+                        <div class="club-image-placeholder">📸</div>
+                        <!-- 실제 사용시: <img src="images/photo-club.jpg" alt="렌즈 속 세상"> -->
+                    </div>
+                    <div class="club-header">
+                        <div class="club-icon">📸</div>
+                        <span class="club-category">취미</span>
+                        <h3 class="club-name">렌즈 속 세상</h3>
+                        <p class="club-description">사진 촬영 기법을 배우고 아름다운 순간들을 포착하며, 정기 출사와 사진전을 통해 작품을 공유하는 사진 동아리입니다.</p>
+                    </div>
+                    <div class="club-footer">
+                        <div class="club-members">19명</div>
+                        <span class="club-status">모집중</span>
+                    </div>
+                </div>
+
+                <div class="club-card" data-category="academic">
+                    <div class="club-image">
+                        <div class="club-image-placeholder">🌍</div>
+                        <!-- 실제 사용시: <img src="images/global-club.jpg" alt="글로벌 네트워크"> -->
+                    </div>
+                    <div class="club-header">
+                        <div class="club-icon">🌍</div>
+                        <span class="club-category">학술</span>
+                        <h3 class="club-name">글로벌 네트워크</h3>
+                        <p class="club-description">영어 회화 실력 향상과 다양한 문화 교류를 통해 국제적 감각을 기르고 글로벌 리더십을 함양하는 어학 동아리입니다.</p>
+                    </div>
+                    <div class="club-footer">
+                        <div class="club-members">36명</div>
+                        <span class="club-status">모집중</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">🔍</div>
+                <div class="empty-message">검색 결과가 없습니다</div>
+                <div class="empty-submessage">다른 키워드로 검색해보세요</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p><strong>대구가톨릭대학교 동아리 소개</strong></p>
+                <p>더 자세한 정보가 필요하시면 학생지원팀(053-850-3114)으로 문의하세요</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM 요소들
+        const searchInput = document.getElementById('searchInput');
+        const filterTags = document.querySelectorAll('.filter-tag');
+        const clubsGrid = document.getElementById('clubsGrid');
+        const emptyState = document.getElementById('emptyState');
+        
+        let currentFilter = 'all';
+        let allClubs = [];
+        
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            allClubs = Array.from(document.querySelectorAll('.club-card'));
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // 검색 기능
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                filterClubs(searchTerm, currentFilter);
+            });
+            
+            // 카테고리 필터
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    // 활성 태그 업데이트
+                    filterTags.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.category;
+                    
+                    const searchTerm = searchInput.value.toLowerCase().trim();
+                    filterClubs(searchTerm, currentFilter);
+                });
+            });
+            
+            // 클럽 카드 클릭 이벤트
+            allClubs.forEach(card => {
+                card.addEventListener('click', function() {
+                    const clubName = this.querySelector('.club-name').textContent;
+                    showClubDetails(clubName);
+                });
+            });
+        }
+        
+        function filterClubs(searchTerm, category) {
+            let visibleCount = 0;
+            
+            allClubs.forEach(card => {
+                const clubName = card.querySelector('.club-name').textContent.toLowerCase();
+                const clubDescription = card.querySelector('.club-description').textContent.toLowerCase();
+                const clubCategory = card.dataset.category;
+                
+                const matchesSearch = !searchTerm || 
+                    clubName.includes(searchTerm) || 
+                    clubDescription.includes(searchTerm);
+                const matchesCategory = category === 'all' || clubCategory === category;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, visibleCount * 50);
+                    visibleCount++;
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 200);
+                }
+            });
+            
+            // 빈 상태 표시
+            if (visibleCount === 0) {
+                emptyState.style.display = 'block';
+                clubsGrid.style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+                clubsGrid.style.display = 'grid';
+            }
+        }
+        
+        function showClubDetails(clubName) {
+            // 실제로는 상세 페이지로 이동하거나 모달을 띄울 수 있습니다
+            alert(`${clubName} 상세 정보\n\n곧 상세 페이지가 준비될 예정입니다.\n지금은 학생지원팀으로 문의해주세요!`);
+        }
+        
+        // 부드러운 스크롤 애니메이션
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // 검색창 포커스 시 부드러운 애니메이션
+        searchInput.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        searchInput.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
