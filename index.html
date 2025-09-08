@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+// 통계 정보 업데이트
+        function updateStats(metadata) {
+            const sectionDescription = document.querySelector('.section-description');
+            if (sectionDescription) {
+                sectionDescription.textContent = `총 ${metadata.totalClubs}개의 동아리가 여러분을 기다리고 있습니다`;
+            }
+        }<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
