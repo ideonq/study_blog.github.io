@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장학금 정보 - DCU Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #3498db;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* 탭 네비게이션 */
+        .tab-nav {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #7f8c8d;
+        }
+
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .tab-btn:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .tab-btn.active:hover {
+            background: #3498db;
+        }
+
+        /* 필터 섹션 */
+        .filter-section {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 200px 200px 120px;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .filter-input, .filter-select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .filter-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: #2980b9;
+        }
+
+        /* 장학금 카드 */
+        .scholarships-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .scholarship-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .scholarship-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .scholarship-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            position: relative;
+        }
+
+        .scholarship-type {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .scholarship-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            padding-right: 80px;
+        }
+
+        .scholarship-organization {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .scholarship-body {
+            padding: 1.5rem;
+        }
+
+        .scholarship-amount {
+            background: #e8f5e8;
+            color: #27ae60;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .scholarship-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 0.8rem;
+            align-items: flex-start;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #2c3e50;
+            min-width: 80px;
+            margin-right: 1rem;
+        }
+
+        .info-value {
+            color: #5d6d7e;
+            flex: 1;
+        }
+
+        .scholarship-requirements {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .requirements-title {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .requirements-list {
+            font-size: 0.9rem;
+            color: #5d6d7e;
+            line-height: 1.5;
+        }
+
+        .scholarship-deadline {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .deadline-urgent {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .scholarship-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: #3498db;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: white;
+            color: #3498db;
+            padding: 0.75rem;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* 교내 장학금 스타일 */
+        .internal-scholarship .scholarship-header {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        /* 교외 장학금 스타일 */
+        .external-scholarship .scholarship-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        /* 상태 배지 */
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .status-closed {
+            background: #fdeaea;
+            color: #e74c3c;
+        }
+
+        .status-upcoming {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 0;
+            border-radius: 15px;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-close:hover {
+            color: #2c3e50;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* 결과 없음 */
+        .no-results {
+            text-align: center;
+            padding: 4rem;
+            color: #7f8c8d;
+            grid-column: 1 / -1;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .scholarships-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scholarship-actions {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                margin: 5% 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="/" class="logo">DCU Portal</a>
+            <ul class="nav-menu">
+                <li><a href="/">홈</a></li>
+                <li><a href="/courses">개설과목</a></li>
+                <li><a href="/clubs">동아리</a></li>
+                <li><a href="/promotion">홍보</a></li>
+                <li><a href="/scholarship">장학금</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">장학금 정보</h1>
+        <p class="page-subtitle">교내외 다양한 장학금 정보를 확인하고 신청해보세요</p>
+
+        <!-- 탭 네비게이션 -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('all')">전체</button>
+            <button class="tab-btn" onclick="showTab('internal')">교내 장학금</button>
+            <button class="tab-btn" onclick="showTab('external')">교외 장학금</button>
+        </div>
+
+        <!-- 필터 섹션 -->
+        <div class="filter-section">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="search-input">장학금명 검색</label>
+                    <input type="text" id="search-input" class="filter-input" placeholder="장학금명을 입력하세요...">
+                </div>
+                <div class="filter-group">
+                    <label for="filter-amount">지원금액</label>
+                    <select id="filter-amount" class="filter-select">
+                        <option value="">전체</option>
+                        <option value="low">100만원 미만</option>
+                        <option value="medium">100~500만원</option>
+                        <option value="high">500만원 이상</option>
+                        <option value="full">전액지원</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">모집상태</label>
+                    <select id="filter-status" class="filter-select">
+                        <option value="">전체</option>
+                        <option value="active">모집중</option>
+                        <option value="upcoming">모집예정</option>
+                        <option value="closed">모집마감</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn" onclick="searchScholarships()">검색</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 장학금 목록 -->
+        <div class="scholarships-grid" id="scholarships-container">
+            <!-- 장학금 카드들이 여기에 표시됩니다 -->
+        </div>
+    </div>
+
+    <!-- 상세정보 모달 -->
+    <div id="scholarship-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div id="modal-header-content"></div>
+            </div>
+            <div class="modal-body" id="modal-body-content">
+                <!-- 모달 내용이 여기에 표시됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 장학금 데이터 변수
+        let scholarshipsData = [];
+        let filteredScholarships = [];
+        let currentTab = 'all';
+
+        // JSON 파일에서 장학금 데이터 로드
+        async function loadScholarshipsData() {
+            try {
+                const response = await fetch('./data/scholarships.json');
+                if (!response.ok) {
+                    throw new Error('데이터를 불러올 수 없습니다.');
+                }
+                scholarshipsData = await response.json();
+                filteredScholarships = [...scholarshipsData];
+                renderScholarships();
+            } catch (error) {
+                console.error('Error loading scholarships data:', error);
+                loadSampleData();
+            }
+        }
+
+        // 샘플 데이터
+        function loadSampleData() {
+            scholarshipsData = [
+                {
+                    id: 1,
+                    name: "성적우수장학금",
+                    type: "internal",
+                    organization: "대구가톨릭대학교",
+                    amount: "등록금 50%",
+                    amountCategory: "medium",
+                    status: "active",
+                    deadline: "2025-03-15",
+                    target: "재학생",
+                    requirements: [
+                        "직전학기 평점평균 3.8 이상",
+                        "12학점 이상 이수",
+                        "징계처분을 받은 적이 없는 자"
+                    ],
+                    benefits: [
+                        "등록금 50% 지원",
+                        "성적우수상 수여",
+                        "장학증서 발급"
+                    ],
+                    applicationMethod: "온라인 신청 (학생포털)",
+                    documents: ["성적증명서", "재학증명서"],
+                    contact: "학생지원팀 042-123-4567",
+                    details: "학업성취도가 우수한 학생을 지원하여 학업 동기를 부여하고 우수 인재 양성을 목적으로 하는 장학금입니다."
+                },
+                {
+                    id: 2,
+                    name: "가계곤란장학금",
+                    type: "internal",
+                    organization: "대구가톨릭대학교",
+                    amount: "등록금 30%",
+                    amountCategory: "medium",
+                    status: "active",
+                    deadline: "2025-03-20",
+                    target: "재학생",
+                    requirements: [
+                        "소득분위 5분위 이하",
+                        "평점평균 2.5 이상",
+                        "15학점 이상 이수 예정"
+                    ],
+                    benefits: [
+                        "등록금 30% 지원",
+                        "생활비 일부 지원"
+                    ],
+                    applicationMethod: "방문 신청 (학생지원팀)",
+                    documents: ["소득증명서", "가족관계증명서", "성적증명서"],
+                    contact: "학생지원팀 042-123-4567",
+                    details: "경제적 어려움을 겪고 있는 학생들의 학업 지속을 돕기 위한 장학금입니다."
+                },
+                {
+                    id: 3,
+                    name: "KT&G 상상univ 장학금",
+                    type: "external",
+                    organization: "KT&G",
+                    amount: "200만원",
+                    amountCategory: "medium",
+                    status: "upcoming",
+                    deadline: "2025-04-30",
+                    target: "대학생",
+                    requirements: [
+                        "전국 4년제 대학 재학생",
+                        "평점평균 3.0 이상",
+                        "사회공헌 활동 경험"
+                    ],
+                    benefits: [
+                        "장학금 200만원 지급",
+                        "멘토링 프로그램 참여",
+                        "인턴십 기회 제공"
+                    ],
+                    applicationMethod: "온라인 신청 (KT&G 홈페이지)",
+                    documents: ["자기소개서", "활동증명서", "성적증명서"],
+                    contact: "KT&G 상상univ 02-123-4567",
+                    details: "창의적이고 진취적인 대학생을 지원하여 미래 인재로 성장할 수 있도록 돕는 장학금입니다."
+                },
+                {
+                    id: 4,
+                    name: "삼성꿈장학재단",
+                    type: "external",
+                    organization: "삼성꿈장학재단",
+                    amount: "전액지원",
+                    amountCategory: "full",
+                    status: "closed",
+                    deadline: "2025-02-28",
+                    target: "저소득층 대학생",
+                    requirements: [
+                        "기초생활수급자 또는 차상위계층",
+                        "평점평균 2.8 이상",
+                        "졸업까지 2년 이상 남은 자"
+                    ],
+                    benefits: [
+                        "등록금 전액 지원",
+                        "생활비 월 30만원",
+                        "노트북 지급",
+                        "해외연수 기회"
+                    ],
+                    applicationMethod: "온라인 신청",
+                    documents: ["소득증명서", "학업계획서", "추천서"],
+                    contact: "삼성꿈장학재단 02-234-5678",
+                    details: "경제적 어려움으로 학업에 지장을 받는 우수한 대학생을 지원하는 종합적인 장학 프로그램입니다."
+                },
+                {
+                    id: 5,
+                    name: "봉사활동장학금",
+                    type: "internal",
+                    organization: "대구가톨릭대학교",
+                    amount: "50만원",
+                    amountCategory: "low",
+                    status: "active",
+                    deadline: "2025-03-25",
+                    target: "재학생",
+                    requirements: [
+                        "연간 봉사시간 100시간 이상",
+                        "평점평균 2.0 이상",
+                        "봉사활동 인증서 제출"
+                    ],
+                    benefits: [
+                        "장학금 50만원 지급",
+                        "봉사활동 우수상 수여",
+                        "생활기록부 기재"
+                    ],
+                    applicationMethod: "온라인 신청 후 서류 제출",
+                    documents: ["봉사활동확인서", "봉사활동계획서"],
+                    contact: "학생지원팀 042-123-4567",
+                    details: "사회봉사 정신을 실천하는 학생을 격려하고 지원하는 장학금입니다."
+                },
+                {
+                    id: 6,
+                    name: "정주영 창업경진대회 장학금",
+                    type: "external",
+                    organization: "정주영재단",
+                    amount: "500만원",
+                    amountCategory: "high",
+                    status: "active",
+                    deadline: "2025-05-15",
+                    target: "창업 관심 대학생",
+                    requirements: [
+                        "전국 대학생 (개인 또는 팀)",
+                        "창업 아이템 보유",
+                        "사업계획서 제출"
+                    ],
+                    benefits: [
+                        "대상 500만원, 우수상 300만원",
+                        "창업 멘토링 제공",
+                        "인큐베이팅 프로그램 참여"
+                    ],
+                    applicationMethod: "온라인 접수",
+                    documents: ["사업계획서", "팀원소개서", "시제품 또는 데모"],
+                    contact: "정주영재단 02-345-6789",
+                    details: "젊은 창업가 정신을 가진 대학생들의 창업을 지원하는 경진대회형 장학금입니다."
+                }
+            ];
+            filteredScholarships = [...scholarshipsData];
+            renderScholarships();
+        }
+
+        // 장학금 목록 렌더링
+        function renderScholarships() {
+            const container = document.getElementById('scholarships-container');
+            
+            if (filteredScholarships.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>검색 결과가 없습니다</h3>
+                        <p>다른 조건으로 검색해보세요.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredScholarships.map(scholarship => `
+                <div class="scholarship-card ${scholarship.type}-scholarship">
+                    <div class="scholarship-header">
+                        <div class="scholarship-type">${scholarship.type === 'internal' ? '교내' : '교외'}</div>
+                        <h3 class="scholarship-title">${scholarship.name}</h3>
+                        <p class="scholarship-organization">${scholarship.organization}</p>
+                    </div>
+                    <div class="scholarship-body">
+                        <div class="scholarship-amount">${scholarship.amount}</div>
+                        
+                        <div class="scholarship-info">
+                            <div class="info-item">
+                                <span class="info-label">대상:</span>
+                                <span class="info-value">${scholarship.target}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">마감일:</span>
+                                <span class="info-value">${formatDate(scholarship.deadline)}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">상태:</span>
+                                <span class="status-badge status-${scholarship.status}">${getStatusText(scholarship.status)}</span>
+                            </div>
+                        </div>
+
+                        <div class="scholarship-requirements">
+                            <div class="requirements-title">주요 자격요건</div>
+                            <div class="requirements-list">
+                                ${scholarship.requirements.slice(0, 2).map(req => `• ${req}`).join('<br>')}
+                                ${scholarship.requirements.length > 2 ? '<br>• 기타 자격요건 있음' : ''}
+                            </div>
+                        </div>
+
+                        <div class="scholarship-deadline ${isDeadlineUrgent(scholarship.deadline) ? 'deadline-urgent' : ''}">
+                            <strong>마감까지 ${calculateDaysUntil(scholarship.deadline)}일 남음</strong>
+                        </div>
+
+                        <div class="scholarship-actions">
+                            <button class="btn-primary" onclick="showScholarshipDetail(${scholarship.id})">자세히보기</button>
+                            <button class="btn-secondary" onclick="applyScholarship(${scholarship.id})">신청하기</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 날짜 포맷팅
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR');
+        }
+
+        // 상태 텍스트 변환
+        function getStatusText(status) {
+            const statusMap = {
+                'active': '모집중',
+                'upcoming': '모집예정',
+                'closed': '모집마감'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 마감일까지 남은 일수 계산
+        function calculateDaysUntil(dateString) {
+            const today = new Date();
+            const deadline = new Date(dateString);
+            const diffTime = deadline - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return Math.max(0, diffDays);
+        }
+
+        // 마감일 긴급 여부 확인
+        function isDeadlineUrgent(dateString) {
+            return calculateDaysUntil(dateString) <= 7;
+        }
+
+        // 탭 변경
+        function showTab(tab) {
+            currentTab = tab;
+            
+            // 탭 버튼 활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 장학금 필터링
+            if (tab === 'all') {
+                filteredScholarships = [...scholarshipsData];
+            } else {
+                filteredScholarships = scholarshipsData.filter(scholarship => scholarship.type === tab);
+            }
+
+            renderScholarships();
+        }
+
+        // 검색 기능
+        function searchScholarships() {
+            const keyword = document.getElementById('search-input').value.toLowerCase();
+            const amountFilter = document.getElementById('filter-amount').value;
+            const statusFilter = document.getElementById('filter-status').value;
+            
+            let baseData = currentTab === 'all' ? scholarshipsData : scholarshipsData.filter(s => s.type === currentTab);
+            
+            filteredScholarships = baseData.filter(scholarship => {
+                const matchKeyword = !keyword || 
+                    scholarship.name.toLowerCase().includes(keyword) || 
+                    scholarship.organization.toLowerCase().includes(keyword);
+                
+                const matchAmount = !amountFilter || scholarship.amountCategory === amountFilter;
+                const matchStatus = !statusFilter || scholarship.status === statusFilter;
+
+                return matchKeyword && matchAmount && matchStatus;
+            });
+
+            renderScholarships();
+        }
+
+        // Enter 키로 검색
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchScholarships();
+            }
+        });
+
+        // 장학금 상세정보
+        function showScholarshipDetail(scholarshipId) {
+            const scholarship = scholarshipsData.find(s => s.id === scholarshipId);
+            if (!scholarship) return;
+
+            const modalHeaderContent = document.getElementById('modal-header-content');
+            const modalBodyContent = document.getElementById('modal-body-content');
+
+            modalHeaderContent.innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <h2 style="margin-bottom: 0.5rem;">${scholarship.name}</h2>
+                    <div style="display: flex; gap: 2rem; align-items: center; color: #7f8c8d; font-size: 0.9rem;">
+                        <span>${scholarship.organization}</span>
+                        <span class="status-badge status-${scholarship.status}">${getStatusText(scholarship.status)}</span>
+                        <span style="background: ${scholarship.type === 'internal' ? '#27ae60' : '#e74c3c'}; color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
+                            ${scholarship.type === 'internal' ? '교내' : '교외'}
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            modalBodyContent.innerHTML = `
+                <div style="margin-bottom: 2rem;">
+                    <div style="background: #e8f5e8; color: #27ae60; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold; font-size: 1.2rem; margin-bottom: 2rem;">
+                        지원금액: ${scholarship.amount}
+                    </div>
+                    
+                    <div style="background: ${isDeadlineUrgent(scholarship.deadline) ? '#f8d7da' : '#fff3cd'}; border-left: 4px solid ${isDeadlineUrgent(scholarship.deadline) ? '#dc3545' : '#ffc107'}; padding: 1rem; margin-bottom: 2rem;">
+                        <strong>신청 마감일: ${formatDate(scholarship.deadline)} (${calculateDaysUntil(scholarship.deadline)}일 남음)</strong>
+                    </div>
+
+                    <h4 style="margin-bottom: 1rem;">장학금 개요</h4>
+                    <p style="margin-bottom: 2rem; line-height: 1.6; color: #5d6d7e;">${scholarship.details}</p>
+
+                    <h4 style="margin-bottom: 1rem;">신청 자격</h4>
+                    <ul style="margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
+                        ${scholarship.requirements.map(req => `<li>${req}</li>`).join('')}
+                    </ul>
+
+                    <h4 style="margin-bottom: 1rem;">지원 혜택</h4>
+                    <ul style="margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
+                        ${scholarship.benefits.map(benefit => `<li>${benefit}</li>`).join('')}
+                    </ul>
+
+                    <h4 style="margin-bottom: 1rem;">신청 방법</h4>
+                    <p style="margin-bottom: 1rem; line-height: 1.6;">${scholarship.applicationMethod}</p>
+                    
+                    <h4 style="margin-bottom: 1rem;">제출 서류</h4>
+                    <ul style="margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
+                        ${scholarship.documents.map(doc => `<li>${doc}</li>`).join('')}
+                    </ul>
+
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+                        <h4 style="margin-bottom: 0.5rem;">문의처</h4>
+                        <p>${scholarship.contact}</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; padding-top: 2rem; border-top: 1px solid #ecf0f1;">
+                    <button class="btn-primary" onclick="applyScholarship(${scholarship.id})" style="margin-right: 1rem; width: 120px;">신청하기</button>
+                    <button class="btn-secondary" onclick="closeModal()" style="width: 120px;">닫기</button>
+                </div>
+            `;
+
+            document.getElementById('scholarship-modal').style.display = 'block';
+        }
+
+        // 장학금 신청
+        function applyScholarship(scholarshipId) {
+            const scholarship = scholarshipsData.find(s => s.id === scholarshipId);
+            if (!scholarship) return;
+
+            if (scholarship.status === 'closed') {
+                alert('이미 마감된 장학금입니다.');
+                return;
+            }
+
+            if (scholarship.status === 'upcoming') {
+                alert('아직 신청 기간이 아닙니다.');
+                return;
+            }
+
+            // 실제로는 신청 페이지로 이동하거나 신청 양식을 열어야 함
+            if (scholarship.type === 'internal') {
+                if (confirm('학생포털로 이동하여 신청하시겠습니까?')) {
+                    // 실제로는 학생포털 링크로 이동
+                    alert('학생포털 장학금 신청 페이지로 이동합니다.');
+                }
+            } else {
+                if (confirm(`${scholarship.organization} 홈페이지로 이동하여 신청하시겠습니까?`)) {
+                    // 실제로는 해당 기관 홈페이지로 이동
+                    alert(`${scholarship.organization} 신청 페이지로 이동합니다.`);
+                }
+            }
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('scholarship-modal').style.display = 'none';
+        }
+
+        // 모달 외부 클릭시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('scholarship-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // 초기 데이터 로드
+        window.addEventListener('DOMContentLoaded', loadScholarshipsData);
+    </script>
+</body>
+</html>
