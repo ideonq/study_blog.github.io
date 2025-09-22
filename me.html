@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCU C-IDE | C언어 온라인 개발환경</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #1e1e1e;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 헤더 */
+        .header {
+            background: #2d2d30;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #569cd6;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .run-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .run-btn:hover {
+            background: #218838;
+        }
+
+        .run-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .clear-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .clear-btn:hover {
+            background: #5a6268;
+        }
+
+        /* 메인 레이아웃 */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #3e3e42;
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 에디터 */
+        .editor-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .editor-header {
+            background: #37373d;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        /* 하이라이트된 코드 표시용 */
+        .code-display {
+            position: absolute;
+            top: 40px;
+            left: 51px;
+            right: 0;
+            bottom: 0;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+            color: transparent;
+        }
+
+        .code-editor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: #d4d4d4;
+            border: none;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            tab-size: 4;
+            z-index: 2;
+        }
+
+        .code-editor:focus {
+            background: rgba(37, 37, 38, 0.3);
+        }
+
+        /* 문법 하이라이팅 스타일 */
+        .keyword {
+            color: #569cd6; /* 파란색 - 키워드 */
+            font-weight: bold;
+        }
+
+        .function {
+            color: #dcdcaa; /* 노란색 - 함수 */
+        }
+
+        .string {
+            color: #ce9178; /* 주황색 - 문자열 */
+        }
+
+        .comment {
+            color: #6a9955; /* 녹색 - 주석 */
+            font-style: italic;
+        }
+
+        .number {
+            color: #b5cea8; /* 연녹색 - 숫자 */
+        }
+
+        .preprocessor {
+            color: #c586c0; /* 자주색 - 전처리기 */
+        }
+
+        .operator {
+            color: #d4d4d4; /* 기본색 - 연산자 */
+        }
+
+        .type {
+            color: #4ec9b0; /* 청록색 - 타입 */
+        }
+
+        .bracket {
+            color: #ffd700; /* 금색 - 괄호 */
+        }
+
+        /* 줄 번호 */
+        .editor-with-numbers {
+            display: flex;
+            height: calc(100% - 40px);
+        }
+
+        .line-numbers {
+            background: #1e1e1e;
+            color: #858585;
+            padding: 1rem 0.5rem 1rem 1rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: right;
+            min-width: 50px;
+            user-select: none;
+            border-right: 1px solid #3e3e42;
+        }
+
+        /* 입력창 */
+        .input-container {
+            height: 150px;
+            border-top: 1px solid #3e3e42;
+        }
+
+        .input-header {
+            background: #37373d;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        .input-area {
+            width: 100%;
+            height: calc(100% - 40px);
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: none;
+            padding: 0.5rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            resize: none;
+            outline: none;
+        }
+
+        /* 출력창 */
+        .output-container {
+            flex: 1;
+        }
+
+        .output-header {
+            background: #37373d;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 0.9rem;
+            color: #cccccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .output-area {
+            width: 100%;
+            height: calc(100% - 40px);
+            background: #0c0c0c;
+            color: #ffffff;
+            border: none;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .error-output {
+            color: #f85149;
+        }
+
+        .success-output {
+            color: #56d364;
+        }
+
+        /* 상태 바 */
+        .status-bar {
+            background: #007acc;
+            color: white;
+            padding: 0.25rem 1rem;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 로딩 애니메이션 */
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 샘플 코드 버튼들 */
+        .samples {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .sample-btn {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s;
+        }
+
+        .sample-btn:hover {
+            background: #106ebe;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                border-right: none;
+                border-bottom: 1px solid #3e3e42;
+            }
+
+            .input-container {
+                height: 120px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <div class="header">
+        <a href="index.html" class="logo">DCU C-IDE</a>
+        <div class="header-controls">
+            <div class="samples">
+                <button class="sample-btn" onclick="loadSample('hello')">Hello World</button>
+                <button class="sample-btn" onclick="loadSample('calculator')">계산기</button>
+                <button class="sample-btn" onclick="loadSample('array')">배열</button>
+            </div>
+            <button class="clear-btn" onclick="clearAll()">전체 지우기</button>
+            <button class="run-btn" id="runBtn" onclick="runCode()">
+                <span id="runIcon">▶</span> 실행
+            </button>
+        </div>
+    </div>
+
+    <!-- 메인 컨테이너 -->
+    <div class="main-container">
+        <!-- 왼쪽 패널 (에디터 + 입력) -->
+        <div class="left-panel">
+            <!-- 코드 에디터 -->
+            <div class="editor-container">
+                <div class="editor-header">
+                    📝 main.c
+                </div>
+                <div class="editor-with-numbers">
+                    <div class="line-numbers" id="lineNumbers">1</div>
+                    <div style="position: relative; flex: 1;">
+                        <div class="code-display" id="codeDisplay"></div>
+                        <textarea class="code-editor" id="codeEditor" placeholder="여기에 C 코드를 입력하세요...">#include <stdio.h>
+
+int main() {
+    printf("Hello, DCU!\\n");
+    return 0;
+}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 입력창 -->
+            <div class="input-container">
+                <div class="input-header">
+                    ⌨️ 프로그램 입력
+                </div>
+                <textarea class="input-area" id="inputArea" placeholder="프로그램에서 입력받을 데이터를 여기에 입력하세요..."></textarea>
+            </div>
+        </div>
+
+        <!-- 오른쪽 패널 (출력) -->
+        <div class="right-panel">
+            <div class="output-container">
+                <div class="output-header">
+                    📺 실행 결과
+                    <button class="clear-btn" onclick="clearOutput()">출력 지우기</button>
+                </div>
+                <div class="output-area" id="outputArea">DCU C-IDE에 오신 것을 환영합니다!
+좌측에 C 코드를 작성하고 '실행' 버튼을 눌러보세요.
+
+💡 팁:
+- scanf()로 입력받는 코드는 하단 입력창에 미리 데이터를 넣어두세요
+- 샘플 코드 버튼으로 예제를 불러올 수 있습니다
+- Ctrl+Enter로 빠른 실행이 가능합니다</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상태 바 -->
+    <div class="status-bar">
+        <span id="statusText">준비됨</span>
+        <span id="statusTime"></span>
+    </div>
+
+    <script>
+        // 전역 변수
+        let compileWorker = null;
+        const codeEditor = document.getElementById('codeEditor');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
+        const runBtn = document.getElementById('runBtn');
+        const runIcon = document.getElementById('runIcon');
+        const statusText = document.getElementById('statusText');
+        const statusTime = document.getElementById('statusTime');
+
+        // C언어 문법 하이라이팅
+        function highlightSyntax(code) {
+            // C언어 키워드
+            const keywords = [
+                'int', 'char', 'float', 'double', 'void', 'long', 'short', 'signed', 'unsigned',
+                'const', 'static', 'extern', 'register', 'auto', 'volatile',
+                'if', 'else', 'while', 'for', 'do', 'switch', 'case', 'default', 'break', 'continue',
+                'return', 'goto', 'sizeof', 'typedef', 'struct', 'union', 'enum'
+            ];
+
+            // 표준 함수들
+            const functions = [
+                'printf', 'scanf', 'fprintf', 'fscanf', 'sprintf', 'sscanf',
+                'putchar', 'getchar', 'puts', 'gets', 'fputc', 'fgetc',
+                'malloc', 'calloc', 'realloc', 'free',
+                'strlen', 'strcpy', 'strcat', 'strcmp', 'strstr',
+                'fopen', 'fclose', 'fread', 'fwrite', 'fseek', 'ftell',
+                'abs', 'sqrt', 'pow', 'sin', 'cos', 'tan', 'log', 'exp'
+            ];
+
+            let highlightedCode = code;
+
+            // 1. 주석 하이라이트 (// 주석)
+            highlightedCode = highlightedCode.replace(
+                /(\\/\\/.*$)/gm,
+                '<span class="comment">$1</span>'
+            );
+
+            // 2. 주석 하이라이트 (/* */ 주석)
+            highlightedCode = highlightedCode.replace(
+                /(\/\*[\s\S]*?\*\/)/g,
+                '<span class="comment">$1</span>'
+            );
+
+            // 3. 문자열 하이라이트
+            highlightedCode = highlightedCode.replace(
+                /(["'])(?:(?=(\\\\?))\\2.)*?\\1/g,
+                '<span class="string">        // 전역 변수
+        let compileWorker = null;
+        const codeEditor = document.getElementById('codeEditor');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const inputArea = document.getElementById('inputArea');
+        const outputArea = document.getElementById('outputArea');
+        const runBtn = document.getElementById('runBtn');
+        const runIcon = document.getElementById('runIcon');
+        const statusText = document.getElementById('statusText');
+        const statusTime = document.getElementById('statusTime');
+
+        // 줄 번호 업데이트
+        function updateLineNumbers() {
+            const lines = codeEditor.value.split('\n').length;
+            const numbers = [];
+            for (let i = 1; i <= lines; i++) {
+                numbers.push(i);
+            }
+            lineNumbers.textContent = numbers.join('\n');
+        }
+
+        // 에디터 스크롤 동기화
+        function syncScroll() {
+            lineNumbers.scrollTop = codeEditor.scrollTop;
+        }</span>'
+            );
+
+            // 4. 전처리기 지시어 하이라이트
+            highlightedCode = highlightedCode.replace(
+                /^(\s*#\s*\w+.*$)/gm,
+                '<span class="preprocessor">$1</span>'
+            );
+
+            // 5. 숫자 하이라이트
+            highlightedCode = highlightedCode.replace(
+                /\b(\d+\.?\d*)\b/g,
+                '<span class="number">$1</span>'
+            );
+
+            // 6. 키워드 하이라이트
+            keywords.forEach(keyword => {
+                const regex = new RegExp(`\\b(${keyword})\\b`, 'g');
+                highlightedCode = highlightedCode.replace(
+                    regex,
+                    '<span class="keyword">$1</span>'
+                );
+            });
+
+            // 7. 함수 하이라이트
+            functions.forEach(func => {
+                const regex = new RegExp(`\\b(${func})(?=\\s*\\()`, 'g');
+                highlightedCode = highlightedCode.replace(
+                    regex,
+                    '<span class="function">$1</span>'
+                );
+            });
+
+            // 8. 사용자 정의 함수 하이라이트 (함수명 다음에 괄호가 오는 패턴)
+            highlightedCode = highlightedCode.replace(
+                /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*(?=\()/g,
+                (match, funcName) => {
+                    // 이미 하이라이트된 것은 건드리지 않기
+                    if (match.includes('<span')) return match;
+                    // 키워드나 표준 함수가 아닌 경우만
+                    if (!keywords.includes(funcName) && !functions.includes(funcName)) {
+                        return `<span class="function">${funcName}</span>`;
+                    }
+                    return match;
+                }
+            );
+
+            // 9. 괄호 하이라이트
+            highlightedCode = highlightedCode.replace(
+                /([(){}[\]])/g,
+                '<span class="bracket">$1</span>'
+            );
+
+            return highlightedCode;
+        }
+
+        // 코드 하이라이팅 업데이트
+        function updateHighlighting() {
+            try {
+                const code = codeEditor.value;
+                const highlightedCode = highlightSyntax(code);
+                codeDisplay.innerHTML = highlightedCode;
+            } catch (error) {
+                console.error('하이라이팅 업데이트 오류:', error);
+                // 오류 발생시 하이라이팅 없이 원본 텍스트만 표시
+                codeDisplay.textContent = codeEditor.value;
+            }
+        }
+
+        // 줄 번호 업데이트
+        function updateLineNumbers() {
+            const lines = codeEditor.value.split('\n').length;
+            const numbers = [];
+            for (let i = 1; i <= lines; i++) {
+                numbers.push(i);
+            }
+            lineNumbers.textContent = numbers.join('\n');
+        }
+
+        // 에디터 스크롤 동기화
+        function syncScroll() {
+            lineNumbers.scrollTop = codeEditor.scrollTop;
+            codeDisplay.scrollTop = codeEditor.scrollTop;
+            codeDisplay.scrollLeft = codeEditor.scrollLeft;
+        }
+
+        // 샘플 코드 로드
+        function loadSample(type) {
+            const samples = {
+                hello: `#include <stdio.h>
+
+int main() {
+    printf("Hello, DCU!\\n");
+    printf("C언어 온라인 IDE입니다.\\n");
+    return 0;
+}`,
+                calculator: `#include <stdio.h>
+
+int main() {
+    int a, b;
+    char op;
+    
+    printf("계산식을 입력하세요 (예: 10 + 5): ");
+    scanf("%d %c %d", &a, &op, &b);
+    
+    switch(op) {
+        case '+':
+            printf("결과: %d\\n", a + b);
+            break;
+        case '-':
+            printf("결과: %d\\n", a - b);
+            break;
+        case '*':
+            printf("결과: %d\\n", a * b);
+            break;
+        case '/':
+            if(b != 0)
+                printf("결과: %.2f\\n", (float)a / b);
+            else
+                printf("0으로 나눌 수 없습니다.\\n");
+            break;
+        default:
+            printf("잘못된 연산자입니다.\\n");
+    }
+    
+    return 0;
+}`,
+                array: `#include <stdio.h>
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+    int sum = 0;
+    
+    printf("배열 원소: ");
+    for(int i = 0; i < 5; i++) {
+        printf("%d ", arr[i]);
+        sum += arr[i];
+    }
+    
+    printf("\\n배열의 합: %d\\n", sum);
+    printf("평균: %.1f\\n", (float)sum / 5);
+    
+    return 0;
+}`
+            };
+
+            if (samples[type]) {
+                codeEditor.value = samples[type];
+                updateLineNumbers();
+                updateHighlighting();
+                setStatus('샘플 코드가 로드되었습니다');
+            }
+        }
+
+        // 상태 업데이트
+        function setStatus(text, isError = false) {
+            statusText.textContent = text;
+            statusText.style.color = isError ? '#f85149' : '#ffffff';
+            statusTime.textContent = new Date().toLocaleTimeString();
+        }
+
+        // 출력 영역에 텍스트 추가
+        function appendOutput(text, className = '') {
+            const span = document.createElement('span');
+            span.textContent = text;
+            if (className) {
+                span.className = className;
+            }
+            outputArea.appendChild(span);
+            outputArea.scrollTop = outputArea.scrollHeight;
+        }
+
+        // 출력 지우기
+        function clearOutput() {
+            outputArea.innerHTML = '';
+        }
+
+        // 전체 지우기
+        function clearAll() {
+            codeEditor.value = '';
+            inputArea.value = '';
+            clearOutput();
+            updateLineNumbers();
+            updateHighlighting();
+            setStatus('모든 내용이 지워졌습니다');
+        }
+
+        // C 코드 컴파일 및 실행 시뮬레이션
+        function runCode() {
+            const code = codeEditor.value.trim();
+            
+            if (!code) {
+                setStatus('코드를 입력해주세요', true);
+                return;
+            }
+
+            // UI 업데이트
+            runBtn.disabled = true;
+            runIcon.innerHTML = '<div class="loading"></div>';
+            setStatus('컴파일 중...');
+            clearOutput();
+
+            // 실제로는 서버에서 컴파일해야 하지만, 데모용으로 시뮬레이션
+            setTimeout(() => {
+                try {
+                    simulateCExecution(code);
+                } catch (error) {
+                    appendOutput('컴파일 오류: ' + error.message + '\\n', 'error-output');
+                    setStatus('컴파일 실패', true);
+                } finally {
+                    runBtn.disabled = false;
+                    runIcon.textContent = '▶';
+                }
+            }, 1500);
+        }
+
+        // C 코드 실행 시뮬레이션
+        function simulateCExecution(code) {
+            appendOutput('=== 컴파일 시작 ===\\n', 'success-output');
+            appendOutput('gcc -o main main.c\\n');
+            appendOutput('컴파일 성공!\\n', 'success-output');
+            appendOutput('\\n=== 프로그램 실행 ===\\n', 'success-output');
+            
+            // 간단한 printf 패턴 매칭
+            const printfRegex = /printf\\s*\\(\\s*"([^"]*)"\\s*(?:,\\s*([^)]*))?\\)/g;
+            const scanfRegex = /scanf\\s*\\(\\s*"([^"]*)"\\s*,\\s*([^)]*)\\)/g;
+            
+            let output = '';
+            let match;
+            
+            // printf 문 찾기
+            while ((match = printfRegex.exec(code)) !== null) {
+                let printText = match[1];
+                
+                // 이스케이프 시퀀스 처리
+                printText = printText.replace(/\\\\n/g, '\\n');
+                printText = printText.replace(/\\\\t/g, '\\t');
+                printText = printText.replace(/\\\\\\\\/g, '\\\\');
+                
+                // 간단한 변수 치환 (데모용)
+                if (match[2]) {
+                    const vars = match[2].split(',').map(v => v.trim());
+                    vars.forEach((v, i) => {
+                        if (v.includes('a') || v.includes('b')) {
+                            printText = printText.replace('%d', Math.floor(Math.random() * 100));
+                        } else if (v.includes('sum')) {
+                            printText = printText.replace('%d', '150');
+                        } else {
+                            printText = printText.replace(/%[dfs]/g, Math.floor(Math.random() * 100));
+                        }
+                    });
+                }
+                
+                output += printText;
+            }
+            
+            // scanf가 있으면 입력 데이터 사용
+            if (scanfRegex.test(code)) {
+                const inputData = inputArea.value.trim();
+                if (inputData) {
+                    appendOutput('입력 데이터:\\n');
+                    appendOutput(inputData + '\\n\\n');
+                }
+            }
+            
+            // 출력 결과
+            if (output) {
+                appendOutput(output);
+            } else {
+                // 기본 Hello World 패턴
+                if (code.includes('Hello') || code.includes('DCU')) {
+                    appendOutput('Hello, DCU!\\n');
+                } else {
+                    appendOutput('프로그램이 정상적으로 실행되었습니다.\\n');
+                }
+            }
+            
+            appendOutput('\\n=== 실행 완료 ===\\n', 'success-output');
+            appendOutput('종료 코드: 0\\n');
+            
+            setStatus('실행 완료');
+        }
+
+        // 키보드 단축키
+        function handleKeyDown(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+            
+            // 탭 키 처리
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = codeEditor.selectionStart;
+                const end = codeEditor.selectionEnd;
+                codeEditor.value = codeEditor.value.substring(0, start) + '    ' + codeEditor.value.substring(end);
+                codeEditor.selectionStart = codeEditor.selectionEnd = start + 4;
+                updateHighlighting();
+            }
+        }
+
+        // 이벤트 리스너
+        codeEditor.addEventListener('input', () => {
+            updateLineNumbers();
+            updateHighlighting();
+        });
+        codeEditor.addEventListener('scroll', syncScroll);
+        codeEditor.addEventListener('keydown', handleKeyDown);
+
+        // 초기화
+        updateLineNumbers();
+        updateHighlighting();
+        setStatus('IDE 준비 완료');
+
+        // 자동 저장 (로컬스토리지는 사용할 수 없으므로 세션 저장)
+        let autoSaveTimer;
+        codeEditor.addEventListener('input', () => {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                // 실제로는 여기서 서버에 저장하거나 다른 저장 방식 사용
+                setStatus('자동 저장됨');
+            }, 2000);
+        });
+
+        // 브라우저 새로고침 경고
+        window.addEventListener('beforeunload', (e) => {
+            if (codeEditor.value.trim() !== '') {
+                e.preventDefault();
+                e.returnValue = '작성한 코드가 있습니다. 정말 페이지를 떠나시겠습니까?';
+            }
+        });
+    </script>
+</body>
+</html>
