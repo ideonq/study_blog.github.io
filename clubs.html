@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 목록 - DCU Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #3498db;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* 필터 및 검색 */
+        .filter-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 200px 200px 120px;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .filter-input, .filter-select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .filter-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: #2980b9;
+        }
+
+        /* 동아리 그리드 */
+        .clubs-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .club-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .club-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .club-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            position: relative;
+        }
+
+        .club-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .club-content {
+            padding: 1.5rem;
+        }
+
+        .club-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .club-subtitle {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .club-description {
+            color: #5d6d7e;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .club-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .club-members {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .club-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-recruiting {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .status-closed {
+            background: #fdeaea;
+            color: #e74c3c;
+        }
+
+        .status-active {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .club-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: #3498db;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: white;
+            color: #3498db;
+            padding: 0.75rem;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* 결과 없음 */
+        .no-results {
+            text-align: center;
+            padding: 4rem;
+            color: #7f8c8d;
+            grid-column: 1 / -1;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 모달 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-close:hover {
+            color: #2c3e50;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .clubs-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="/" class="logo">DCU Portal</a>
+            <ul class="nav-menu">
+                <li><a href="/">홈</a></li>
+                <li><a href="/courses">개설과목</a></li>
+                <li><a href="/clubs">동아리</a></li>
+                <li><a href="/promotion">홍보</a></li>
+                <li><a href="/scholarship">장학금</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">동아리 목록</h1>
+        <p class="page-subtitle">다양한 분야의 동아리 정보를 확인하고 참여해보세요</p>
+
+        <!-- 필터 및 검색 -->
+        <div class="filter-section">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="search-keyword">동아리명 검색</label>
+                    <input type="text" id="search-keyword" class="filter-input" placeholder="동아리명을 입력하세요">
+                </div>
+                <div class="filter-group">
+                    <label for="filter-category">분야</label>
+                    <select id="filter-category" class="filter-select">
+                        <option value="">전체</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">모집상태</label>
+                    <select id="filter-status" class="filter-select">
+                        <option value="">전체</option>
+                        <option value="recruiting">모집중</option>
+                        <option value="active">활동중</option>
+                        <option value="closed">모집마감</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn" onclick="searchClubs()">검색</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 동아리 목록 -->
+        <div class="clubs-section" id="clubs-list">
+            <!-- 동아리 카드들이 여기에 표시됩니다 -->
+        </div>
+    </div>
+
+    <!-- 상세정보 모달 -->
+    <div id="club-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modal-body">
+                <!-- 모달 내용이 여기에 표시됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 동아리 데이터 변수
+        let clubsData = [];
+        let filteredClubs = [];
+
+        // JSON 파일에서 동아리 데이터 로드
+        async function loadClubsData() {
+            try {
+                const response = await fetch('./data/clubs.json');
+                if (!response.ok) {
+                    throw new Error('데이터를 불러올 수 없습니다.');
+                }
+                clubsData = await response.json();
+                filteredClubs = [...clubsData];
+                renderClubs();
+                loadCategories();
+            } catch (error) {
+                console.error('Error loading clubs data:', error);
+                loadSampleData();
+            }
+        }
+
+        // 샘플 데이터
+        function loadSampleData() {
+            clubsData = [
+                {
+                    id: 1,
+                    name: "프로그래밍 동아리 CODE",
+                    category: "IT/컴퓨터",
+                    description: "프로그래밍을 사랑하는 학생들이 모인 동아리입니다. 다양한 언어를 배우고 프로젝트를 진행합니다.",
+                    members: 25,
+                    maxMembers: 30,
+                    status: "recruiting",
+                    established: "2020",
+                    contact: "code@dcu.ac.kr",
+                    activities: ["프로그래밍 스터디", "해커톤 참여", "프로젝트 개발"],
+                    meetingTime: "매주 화요일 19:00",
+                    location: "공학관 501호",
+                    icon: "💻"
+                },
+                {
+                    id: 2,
+                    name: "밴드 동아리 ECHO",
+                    category: "예술/문화",
+                    description: "음악을 통해 소통하는 밴드 동아리입니다. 정기 공연과 버스킹을 통해 무대 경험을 쌓습니다.",
+                    members: 18,
+                    maxMembers: 20,
+                    status: "active",
+                    established: "2018",
+                    contact: "echo@dcu.ac.kr",
+                    activities: ["정기 공연", "버스킹", "음악 창작"],
+                    meetingTime: "매주 목요일 18:00",
+                    location: "음악실 A동 301호",
+                    icon: "🎸"
+                },
+                {
+                    id: 3,
+                    name: "영어회화 동아리 SPEAK",
+                    category: "언어/어학",
+                    description: "원어민과 함께하는 영어회화 동아리입니다. 자연스러운 회화 실력 향상을 목표로 합니다.",
+                    members: 22,
+                    maxMembers: 25,
+                    status: "recruiting",
+                    established: "2019",
+                    contact: "speak@dcu.ac.kr",
+                    activities: ["영어 회화", "토론", "영화 감상"],
+                    meetingTime: "매주 수요일 17:00",
+                    location: "인문관 201호",
+                    icon: "🗣️"
+                },
+                {
+                    id: 4,
+                    name: "댄스 동아리 MOVE",
+                    category: "예술/문화",
+                    description: "다양한 장르의 댄스를 배우고 공연하는 동아리입니다. 초보자도 환영합니다.",
+                    members: 30,
+                    maxMembers: 30,
+                    status: "closed",
+                    established: "2017",
+                    contact: "move@dcu.ac.kr",
+                    activities: ["댄스 연습", "공연", "경연대회 참가"],
+                    meetingTime: "매주 금요일 19:30",
+                    location: "체육관 지하 연습실",
+                    icon: "💃"
+                },
+                {
+                    id: 5,
+                    name: "봉사 동아리 CARE",
+                    category: "봉사/사회",
+                    description: "지역사회에 도움이 되는 다양한 봉사활동을 진행하는 동아리입니다.",
+                    members: 35,
+                    maxMembers: 40,
+                    status: "recruiting",
+                    established: "2016",
+                    contact: "care@dcu.ac.kr",
+                    activities: ["지역 봉사", "환경 보호", "어르신 돌봄"],
+                    meetingTime: "매주 토요일 10:00",
+                    location: "학생회관 3층",
+                    icon: "❤️"
+                },
+                {
+                    id: 6,
+                    name: "사진 동아리 FOCUS",
+                    category: "취미/여가",
+                    description: "사진 촬영과 편집을 배우고 작품 전시회를 여는 동아리입니다.",
+                    members: 15,
+                    maxMembers: 20,
+                    status: "recruiting",
+                    established: "2021",
+                    contact: "focus@dcu.ac.kr",
+                    activities: ["사진 촬영", "편집 교육", "전시회"],
+                    meetingTime: "매주 일요일 14:00",
+                    location: "미디어센터",
+                    icon: "📷"
+                }
+            ];
+            filteredClubs = [...clubsData];
+            renderClubs();
+            loadCategories();
+        }
+
+        // 카테고리 목록 동적 로드
+        function loadCategories() {
+            const categories = [...new Set(clubsData.map(club => club.category))];
+            const categorySelect = document.getElementById('filter-category');
+            
+            while (categorySelect.children.length > 1) {
+                categorySelect.removeChild(categorySelect.lastChild);
+            }
+            
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // 동아리 목록 렌더링
+        function renderClubs() {
+            const clubsList = document.getElementById('clubs-list');
+            
+            if (filteredClubs.length === 0) {
+                clubsList.innerHTML = `
+                    <div class="no-results">
+                        <h3>검색 결과가 없습니다</h3>
+                        <p>다른 조건으로 검색해보세요.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            clubsList.innerHTML = filteredClubs.map(club => `
+                <div class="club-card">
+                    <div class="club-image">
+                        <span style="font-size: 4rem;">${club.icon}</span>
+                        <div class="club-category">${club.category}</div>
+                    </div>
+                    <div class="club-content">
+                        <h3 class="club-title">${club.name}</h3>
+                        <p class="club-subtitle">설립: ${club.established}년</p>
+                        <p class="club-description">${club.description}</p>
+                        <div class="club-info">
+                            <span class="club-members">멤버 ${club.members}/${club.maxMembers}명</span>
+                            <span class="club-status status-${club.status}">
+                                ${getStatusText(club.status)}
+                            </span>
+                        </div>
+                        <div class="club-buttons">
+                            <button class="btn-primary" onclick="showClubDetails(${club.id})">자세히보기</button>
+                            <button class="btn-secondary" onclick="contactClub('${club.contact}')">문의하기</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 상태 텍스트 변환
+        function getStatusText(status) {
+            const statusMap = {
+                'recruiting': '모집중',
+                'active': '활동중',
+                'closed': '모집마감'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 검색 기능
+        function searchClubs() {
+            const keyword = document.getElementById('search-keyword').value.toLowerCase();
+            const category = document.getElementById('filter-category').value;
+            const status = document.getElementById('filter-status').value;
+
+            filteredClubs = clubsData.filter(club => {
+                const matchKeyword = !keyword || 
+                    club.name.toLowerCase().includes(keyword) || 
+                    club.description.toLowerCase().includes(keyword);
+                
+                const matchCategory = !category || club.category === category;
+                const matchStatus = !status || club.status === status;
+
+                return matchKeyword && matchCategory && matchStatus;
+            });
+
+            renderClubs();
+        }
+
+        // Enter 키로 검색
+        document.getElementById('search-keyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchClubs();
+            }
+        });
+
+        // 동아리 상세정보 모달
+        function showClubDetails(clubId) {
+            const club = clubsData.find(c => c.id === clubId);
+            if (!club) return;
+
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 5rem; margin-bottom: 1rem;">${club.icon}</div>
+                    <h2>${club.name}</h2>
+                    <p style="color: #7f8c8d; margin-bottom: 1rem;">${club.category}</p>
+                    <span class="club-status status-${club.status}" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                        ${getStatusText(club.status)}
+                    </span>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem;">동아리 소개</h3>
+                    <p style="line-height: 1.6;">${club.description}</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">기본 정보</h4>
+                        <p><strong>설립연도:</strong> ${club.established}년</p>
+                        <p><strong>회원 수:</strong> ${club.members}/${club.maxMembers}명</p>
+                        <p><strong>모임시간:</strong> ${club.meetingTime}</p>
+                        <p><strong>활동장소:</strong> ${club.location}</p>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem;">주요 활동</h4>
+                        ${club.activities.map(activity => `<p>• ${activity}</p>`).join('')}
+                    </div>
+                </div>
+
+                <div style="text-align: center; padding-top: 2rem; border-top: 1px solid #ecf0f1;">
+                    <button class="btn-primary" onclick="contactClub('${club.contact}')" style="margin-right: 1rem;">가입 문의</button>
+                    <button class="btn-secondary" onclick="closeModal()">닫기</button>
+                </div>
+            `;
+
+            document.getElementById('club-modal').style.display = 'block';
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('club-modal').style.display = 'none';
+        }
+
+        // 동아리 문의
+        function contactClub(email) {
+            window.location.href = `mailto:${email}?subject=동아리 가입 문의`;
+        }
+
+        // 모달 외부 클릭시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('club-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // 초기 데이터 로드
+        window.addEventListener('DOMContentLoaded', loadClubsData);
+    </script>
+</body>
+</html>
