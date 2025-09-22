@@ -3,3356 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DCU 동아리 - 대구가톨릭대학교 동아리 소개</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <title>DCU Portal</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-            line-height: 1.7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
             color: #2c3e50;
-            background: #fafbfc;
         }
 
-        /* 다크모드 스타일 */
-        body.dark-mode {
-            background: #1a1a2e;
-            color: #e5e5e7;
-        }
-
-        body.dark-mode .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-
-        body.dark-mode .search-section,
-        body.dark-mode .club-card,
-        body.dark-mode .modal {
-            background: #16213e;
-            border-color: rgba(255,255,255,0.1);
-        }
-
-        body.dark-mode .filter-tag {
-            background: #1a1a2e;
-            color: #e5e5e7;
-        }
-
-        body.dark-mode .search-box {
-            background: #1a1a2e;
-            color: #e5e5e7;
-            border-color: rgba(255,255,255,0.1);
-        }
-
-        body.dark-mode .footer {
-            background: linear-gradient(135deg, #0f0f23, #000000);
-        }
-        
+        /* 헤더 */
         .header {
-            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
-            position: relative;
-            overflow: hidden;
-            padding: 4rem 0 6rem;
-        }
-        
-        .header::before {
-            content: '';
-            position: absolute;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            z-index: 1000;
         }
-        
-        .container {
+
+        .nav {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .header-content {
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        /* 상단 네비게이션 */
-        .top-nav {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
             display: flex;
-            gap: 1rem;
-            z-index: 10;
-        }
-
-        .nav-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            font-size: 0.9rem;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-        
-        .university-logo {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 20px;
-            margin: 0 auto 1.5rem;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        /* 실시간 카운터 */
-        .stats-bar {
-            position: absolute;
-            bottom: -2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 2rem;
-            background: rgba(255,255,255,0.1);
             padding: 1rem 2rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
         }
 
-        .stat-item {
-            text-align: center;
-            color: white;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-        
-        .university-name {
-            font-size: 1rem;
-            font-weight: 300;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-            letter-spacing: 2px;
-        }
-        
-        .main-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .main-title:hover {
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            transform: scale(1.05);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            font-weight: 400;
-            opacity: 0.85;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .search-section {
-            background: white;
-            margin: -4rem auto 4rem;
-            padding: 2.5rem;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            position: relative;
-            max-width: 700px;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .search-container {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-        
-        .search-box {
-            width: 100%;
-            padding: 1.2rem 1.5rem 1.2rem 3.5rem;
-            font-size: 1rem;
-            border: 2px solid #f1f5f9;
-            border-radius: 16px;
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #f8fafc;
-            font-family: inherit;
-        }
-        
-        .search-box:focus {
-            border-color: #2c5aa0;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
-        }
-        
-        .search-icon {
-            position: absolute;
-            left: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-            font-size: 1.1rem;
-        }
-
-        /* 고급 검색 */
-        .advanced-search {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .advanced-search.active {
-            display: block;
-        }
-
-        .search-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .search-option {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .search-option label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #374151;
-        }
-
-        .search-option select,
-        .search-option input {
-            padding: 0.5rem;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-
-        .advanced-toggle {
-            background: none;
-            border: none;
-            color: #2c5aa0;
-            cursor: pointer;
-            font-size: 0.9rem;
-            text-decoration: underline;
-            margin-bottom: 1rem;
-        }
-        
-        .filter-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .filter-tag {
-            padding: 0.7rem 1.5rem;
-            background: #f1f5f9;
-            color: #475569;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.9rem;
-            font-weight: 500;
-            font-family: inherit;
-            border: 2px solid transparent;
-            position: relative;
-        }
-        
-        .filter-tag:hover {
-            background: #e2e8f0;
-            transform: translateY(-2px);
-        }
-        
-        .filter-tag.active {
-            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
-            color: white;
-            box-shadow: 0 4px 20px rgba(44, 90, 160, 0.3);
-        }
-
-        .filter-tag .badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* 정렬 및 보기 옵션 */
-        .view-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .sort-options {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .sort-select {
-            padding: 0.5rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-        }
-
-        .view-mode-btns {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .view-mode-btn {
-            padding: 0.5rem;
-            background: #f1f5f9;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .view-mode-btn.active {
-            background: #2c5aa0;
-            color: white;
-        }
-        
-        .add-club-section {
-            text-align: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid #e2e8f0;
-        }
-        
-        .add-club-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.5rem;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.9rem;
-            font-weight: 600;
-            font-family: inherit;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-        
-        .add-club-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-        }
-        
-        .main-content {
-            margin: 4rem 0;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
-        }
-        
-        .section-description {
-            font-size: 1.1rem;
-            color: #64748b;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .clubs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-            margin-top: 3rem;
-            transition: all 0.5s ease;
-        }
-
-        .clubs-grid.list-view {
-            grid-template-columns: 1fr;
-        }
-
-        .clubs-grid.compact-view {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .club-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.05);
-            position: relative;
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .club-card.hidden {
-            opacity: 0;
-            transform: scale(0.9);
-            pointer-events: none;
-        }
-        
-        .club-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-        
-        .club-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #2c5aa0, #1e3a8a);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-        
-        .club-card:hover::before {
-            opacity: 1;
-        }
-
-        /* 즐겨찾기 */
-        .favorite-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255,255,255,0.9);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 5;
-            font-size: 1.2rem;
-        }
-
-        .favorite-btn:hover {
-            transform: scale(1.1);
-            background: white;
-        }
-
-        .favorite-btn.active {
-            color: #ef4444;
-        }
-
-        /* 인기도 표시 */
-        .popularity-badge {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            z-index: 5;
-        }
-        
-        .club-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-        }
-        
-        .club-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 60%);
-        }
-        
-        .club-header {
-            padding: 1.5rem 2rem 1rem;
-            position: relative;
-        }
-        
-        .club-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.2rem;
-            color: white;
-            box-shadow: 0 6px 15px rgba(44, 90, 160, 0.3);
-            position: absolute;
-            top: -25px;
-            left: 2rem;
-            border: 3px solid white;
-        }
-        
-        .club-category {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(44, 90, 160, 0.1);
-            color: #2c5aa0;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            position: absolute;
-            top: 1.5rem;
-            right: 2rem;
-        }
-        
-        .club-name {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.8rem;
-            letter-spacing: -0.5px;
-            margin-top: 1rem;
-        }
-        
-        .club-description {
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* 평점 시스템 */
-        .club-rating {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .stars {
-            display: flex;
-            gap: 2px;
-        }
-
-        .star {
-            color: #fbbf24;
-            font-size: 1rem;
-        }
-
-        .rating-text {
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        /* 태그 시스템 */
-        .club-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .club-tag {
-            background: #f1f5f9;
-            color: #64748b;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-        }
-        
-        .club-footer {
-            padding: 0 2rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .club-members {
-            display: flex;
-            align-items: center;
-            color: #64748b;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        
-        .club-members::before {
-            content: '💰';
-            margin-right: 0.5rem;
-            font-size: 1rem;
-        }
-        
-        .club-status {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
-        }
-
-        /* 리스트 뷰 전용 스타일 */
-        .clubs-grid.list-view .club-card {
-            display: flex;
-            align-items: center;
-            padding: 1.5rem;
-        }
-
-        .clubs-grid.list-view .club-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 12px;
-            margin-right: 1.5rem;
-            font-size: 2rem;
-        }
-
-        .clubs-grid.list-view .club-header {
-            flex: 1;
-            padding: 0;
-            position: static;
-        }
-
-        .clubs-grid.list-view .club-icon {
-            display: none;
-        }
-
-        .clubs-grid.list-view .club-category {
-            position: static;
-            margin-bottom: 0.5rem;
-        }
-
-        .clubs-grid.list-view .club-footer {
-            padding: 0;
-            margin-left: 1rem;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.5rem;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #64748b;
-            display: none;
-        }
-        
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-        
-        .empty-message {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        
-        .empty-submessage {
-            font-size: 1rem;
-            opacity: 0.7;
-        }
-
-        /* 로딩 스피너 */
-        .loading-spinner {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #2c5aa0;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* 페이지네이션 */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        .pagination-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid #d1d5db;
-            background: white;
-            color: #374151;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .pagination-btn:hover {
-            background: #f9fafb;
-        }
-
-        .pagination-btn.active {
-            background: #2c5aa0;
-            color: white;
-            border-color: #2c5aa0;
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* 통계 섹션 */
-        .stats-section {
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            padding: 4rem 0;
-            margin: 4rem 0;
-            border-radius: 20px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2c5aa0;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        /* 추천 동아리 섹션 */
-        .recommendations {
-            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
-            color: white;
-            padding: 4rem 2rem;
-            border-radius: 20px;
-            margin: 4rem 0;
-            text-align: center;
-        }
-
-        .recommendations h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .recommendations p {
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .recommendation-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .recommendation-card {
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .recommendation-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.15);
-        }
-        
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .modal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: white;
-            border-radius: 20px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .modal-overlay.active .modal {
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        .modal-header {
-            padding: 2rem 2rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            position: relative;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-close:hover {
-            background: #f1f5f9;
-        }
-        
-        .modal-content {
-            padding: 2rem;
-        }
-        
-        .modal-club-name {
+        .logo {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-        }
-        
-        .modal-club-category {
-            display: inline-block;
-            background: rgba(44, 90, 160, 0.1);
-            color: #2c5aa0;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+            font-weight: bold;
+            color: #3498db;
         }
 
-        /* 모달 탭 */
-        .modal-tabs {
+        .nav-menu {
             display: flex;
-            border-bottom: 1px solid #e2e8f0;
-            margin-bottom: 2rem;
+            list-style: none;
+            gap: 2rem;
         }
 
-        .modal-tab {
-            padding: 1rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
+        .nav-menu a {
+            text-decoration: none;
+            color: #2c3e50;
             font-weight: 500;
-            color: #64748b;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
+            transition: color 0.3s;
         }
 
-        .modal-tab.active {
-            color: #2c5aa0;
-            border-bottom-color: #2c5aa0;
+        .nav-menu a:hover {
+            color: #3498db;
         }
 
-        .modal-tab-content {
-            display: none;
+        /* 메인 */
+        .main {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            text-align: center;
+            background: #ecf0f1;
         }
 
-        .modal-tab-content.active {
-            display: block;
-        }
-
-        /* 리뷰 섹션 */
-        .reviews-section {
-            margin-top: 2rem;
-        }
-
-        .review-item {
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 12px;
+        .main h1 {
+            font-size: 3rem;
             margin-bottom: 1rem;
+            color: #2c3e50;
         }
 
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .review-author {
-            font-weight: 600;
-            color: #374151;
-        }
-
-        .review-date {
-            font-size: 0.8rem;
-            color: #9ca3af;
-        }
-
-        .review-rating {
-            color: #fbbf24;
-            margin-bottom: 0.5rem;
-        }
-
-        .review-text {
-            color: #64748b;
-            line-height: 1.6;
-        }
-
-        /* 리뷰 작성 폼 */
-        .review-form {
-            background: #f8fafc;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #374151;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-family: inherit;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .rating-input {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .rating-star {
-            font-size: 1.5rem;
-            color: #d1d5db;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .rating-star:hover,
-        .rating-star.active {
-            color: #fbbf24;
-        }
-
-        /* 갤러리 */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .gallery-item {
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-
-        /* 공지사항 */
-        .notices {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 12px;
-            padding: 1rem;
+        .main p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
             margin-bottom: 2rem;
         }
 
-        .notice-title {
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 0.5rem;
-        }
-
-        .notice-content {
-            color: #78350f;
-            font-size: 0.9rem;
-        }
-
-        /* FAQ 섹션 */
-        .faq-section {
-            margin: 4rem 0;
-        }
-
-        .faq-item {
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .faq-question {
-            padding: 1.5rem;
-            background: #f8fafc;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: #374151;
-            transition: all 0.3s ease;
-        }
-
-        .faq-question:hover {
-            background: #f1f5f9;
-        }
-
-        .faq-answer {
-            padding: 0 1.5rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            color: #64748b;
-            line-height: 1.6;
-        }
-
-        .faq-item.active .faq-answer {
-            padding: 1.5rem;
-            max-height: 200px;
-        }
-
-        .faq-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.active .faq-icon {
-            transform: rotate(180deg);
-        }
-
-        /* 비교 기능 */
-        .compare-section {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            z-index: 100;
-        }
-
-        .compare-section.active {
-            transform: translateY(0);
-        }
-
-        .compare-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .compare-clubs {
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
-        }
-
-        .compare-club {
-            min-width: 200px;
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 12px;
-            position: relative;
-        }
-
-        .compare-remove {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: #ef4444;
+        .btn {
+            background: #3498db;
             color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-size: 0.8rem;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            transition: background 0.3s;
         }
 
-        /* 토스트 알림 */
-        .toast {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: #10b981;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            z-index: 1100;
+        .btn:hover {
+            background: #2980b9;
         }
 
-        .toast.show {
-            transform: translateX(0);
+        /* 카드 섹션 */
+        .cards {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .toast.error {
-            background: #ef4444;
-        }
-
-        .toast.warning {
-            background: #f59e0b;
-        }
-
-        /* 플로팅 액션 버튼 */
-        .floating-actions {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 50;
-        }
-
-        .fab {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: #2c5aa0;
-            color: white;
-            border: none;
-            box-shadow: 0 4px 20px rgba(44, 90, 160, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(44, 90, 160, 0.4);
-        }
-
-        .fab.secondary {
-            background: #64748b;
-            width: 48px;
-            height: 48px;
-            font-size: 1rem;
-        }
-
-        /* 즐겨찾기 페이지 */
-        .favorites-section {
-            display: none;
-        }
-
-        .favorites-section.active {
-            display: block;
-        }
-
-        /* 맵 뷰 */
-        .map-container {
-            height: 400px;
-            background: #f1f5f9;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 2rem 0;
-            border: 2px dashed #d1d5db;
-        }
-
-        .map-placeholder {
+        .cards h2 {
             text-align: center;
-            color: #64748b;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
         }
-        
-        .modal-section {
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #7f8c8d;
             margin-bottom: 1.5rem;
         }
-        
-        .modal-section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #374151;
+
+        .card-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 정보 섹션 */
+        .info {
+            background: #f8f9fa;
+            padding: 4rem 2rem;
+        }
+
+        .info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .info-box h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item h4 {
+            color: #2c3e50;
             margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .modal-section-content {
-            color: #64748b;
-            line-height: 1.6;
-        }
-        
-        .modal-actions {
-            padding: 1rem 2rem 2rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            border-top: 1px solid #e2e8f0;
-            flex-wrap: wrap;
-        }
-        
-        .modal-btn {
-            padding: 0.7rem 1.5rem;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .modal-btn.primary {
-            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
-            color: white;
-        }
-        
-        .modal-btn.secondary {
-            background: #f1f5f9;
-            color: #64748b;
         }
 
-        .modal-btn.success {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-
-        .modal-btn.warning {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-        }
-        
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .footer {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: #94a3b8;
-            text-align: center;
-            padding: 4rem 0;
-            margin-top: 6rem;
-        }
-        
-        .footer-content {
+        .info-item span {
+            color: #6c757d;
             font-size: 0.9rem;
-            line-height: 1.6;
         }
-        
-        .footer-content strong {
+
+        /* 푸터 */
+        .footer {
+            background: #34495e;
             color: white;
-            font-weight: 600;
+            text-align: center;
+            padding: 3rem 2rem 1rem;
         }
 
-        /* 소셜 미디어 링크 */
-        .social-links {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
+        .footer h3 {
+            margin-bottom: 1rem;
         }
 
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
+        .footer p {
+            color: #bdc3c7;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
             display: flex;
-            align-items: center;
             justify-content: center;
-            color: #94a3b8;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
             text-decoration: none;
-            transition: all 0.3s ease;
         }
 
-        .social-link:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
+        .footer-links a:hover {
             color: white;
         }
 
-        /* 애니메이션 */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .footer-bottom {
+            border-top: 1px solid #4a5568;
+            padding-top: 1rem;
+            color: #a0aec0;
         }
 
-        .animate-fade-in {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        /* 반응형 디자인 개선 */
+        /* 반응형 */
         @media (max-width: 768px) {
-            .main-title {
-                font-size: 2.5rem;
+            .nav-menu {
+                display: none;
             }
-            
-            .container {
-                padding: 0 1rem;
+
+            .main h1 {
+                font-size: 2rem;
             }
-            
-            .search-section {
-                margin: -3rem 1rem 3rem;
-                padding: 2rem;
-            }
-            
-            .clubs-grid {
+
+            .info-container {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
-            
-            .filter-container {
-                justify-content: flex-start;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .modal {
-                width: 95%;
-                margin: 1rem;
-            }
-            
-            .modal-actions {
-                flex-direction: column;
-            }
 
-            .stats-bar {
+            .footer-links {
                 flex-direction: column;
                 gap: 1rem;
-            }
-
-            .view-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .top-nav {
-                position: static;
-                justify-content: center;
-                margin-bottom: 2rem;
-            }
-
-            .floating-actions {
-                bottom: 1rem;
-                right: 1rem;
-            }
-
-            .compare-section {
-                padding: 1rem;
-            }
-
-            .compare-clubs {
-                flex-direction: column;
-            }
-
-            .toast {
-                left: 1rem;
-                right: 1rem;
-                transform: translateY(-100%);
-            }
-
-            .toast.show {
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .clubs-grid.compact-view {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .recommendation-cards {
-                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="top-nav">
-            <button class="nav-btn" id="darkModeToggle">🌙 다크모드</button>
-            <button class="nav-btn" id="favoritesToggle">⭐ 즐겨찾기</button>
-            <button class="nav-btn" id="helpToggle">❓ 도움말</button>
-        </div>
-        <div class="container">
-            <div class="header-content">
-                <div class="university-logo">🎓</div>
-                <div class="university-name">DAEGU CATHOLIC UNIVERSITY</div>
-                <h1 class="main-title" onclick="location.reload()">DCU 동아리</h1>
-                <p class="subtitle">함께 성장하고 꿈을 키워나가는 특별한 공간을 만나보세요</p>
-                <div class="stats-bar">
-                    <div class="stat-item">
-                        <div class="stat-number" id="totalClubs"></div>
-                        <div class="stat-label">등록된 동아리</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="activeClubs"></div>
-                        <div class="stat-label">모집중</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="totalViews"></div>
-                        <div class="stat-label">총 조회수</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <nav class="nav">
+            <div class="logo">DCU Portal</div>
+            <ul class="nav-menu">
+                <li><a href="#home">홈</a></li>
+                <li><a href="#services">서비스</a></li>
+                <li><a href="#info">정보</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <main class="container">
-        <section class="search-section">
-            <div class="search-container">
-                <input type="text" class="search-box" placeholder="관심있는 동아리를 검색해보세요..." id="searchInput">
-                <div class="search-icon">🔍</div>
-            </div>
-            <button class="advanced-toggle" id="advancedToggle">고급 검색 ▼</button>
-            <div class="advanced-search" id="advancedSearch">
-                <div class="search-options">
-                    <div class="search-option">
-                        <label>회비 범위</label>
-                        <select id="feeRange">
-                            <option value="">전체</option>
-                            <option value="0-20000">2만원 이하</option>
-                            <option value="20000-40000">2-4만원</option>
-                            <option value="40000-99999">4만원 이상</option>
-                        </select>
-                    </div>
-                    <div class="search-option">
-                        <label>최소 평점</label>
-                        <select id="minRating">
-                            <option value="">전체</option>
-                            <option value="4">4점 이상</option>
-                            <option value="3">3점 이상</option>
-                            <option value="2">2점 이상</option>
-                        </select>
-                    </div>
-                    <div class="search-option">
-                        <label>활동 요일</label>
-                        <select id="activityDay">
-                            <option value="">전체</option>
-                            <option value="weekday">평일</option>
-                            <option value="weekend">주말</option>
-                            <option value="flexible">유동적</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-container">
-                <button class="filter-tag active" data-category="all">
-                    전체 <span class="badge">15</span>
-                </button>
-                <button class="filter-tag" data-category="academic">
-                    학술 <span class="badge">0</span>
-                </button>
-                <button class="filter-tag" data-category="sports">
-                    체육 <span class="badge">5</span>
-                </button>
-                <button class="filter-tag" data-category="art">
-                    예술 <span class="badge">4</span>
-                </button>
-                <button class="filter-tag" data-category="volunteer">
-                    봉사 <span class="badge">1</span>
-                </button>
-                <button class="filter-tag" data-category="hobby">
-                    취미 <span class="badge">5</span>
-                </button>
-                <button class="filter-tag" data-category="religion">
-                    종교 <span class="badge">0</span>
-                </button>
-            </div>
-            <div class="add-club-section">
-                <button class="add-club-btn" id="addClubBtn">
-                    <span>📝</span>
-                    <span>동아리 추가 요청</span>
-                </button>
-            </div>
-        </section>
+    <section class="main" id="home">
+        <h1>대구가톨릭대학교 포털</h1>
+        <p>학교 생활에 필요한 모든 정보를 한 곳에서</p>
+        <a href="#services" class="btn">시작하기</a>
+    </section>
 
-        <!-- 공지사항 -->
-        <div class="notices">
-            <div class="notice-title">📢 공지사항</div>
-            <div class="notice-content">2025년 1학기 동아리 신입회원 모집이 시작되었습니다! 각 동아리별 상세 정보를 확인하고 지원해보세요.</div>
-        </div>
-
-        <section class="main-content">
-            <div class="section-header">
-                <h2 class="section-title">동아리 둘러보기</h2>
-                <p class="section-description">총 <span id="displayCount">15</span>개의 동아리가 여러분을 기다리고 있습니다</p>
+    <section class="cards" id="services">
+        <h2>서비스</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>개설과목 정보</h3>
+                <p>이번 학기 개설 과목 정보를 확인하세요</p>
+                <a href="#" class="card-link">바로가기 →</a>
             </div>
-
-            <div class="view-controls">
-                <div class="sort-options">
-                    <label for="sortSelect">정렬:</label>
-                    <select class="sort-select" id="sortSelect">
-                        <option value="name">이름순</option>
-                        <option value="category">분야별</option>
-                        <option value="popularity">인기순</option>
-                        <option value="rating">평점순</option>
-                        <option value="recent">최신순</option>
-                    </select>
-                </div>
-                <div class="view-mode-btns">
-                    <button class="view-mode-btn active" data-view="grid" title="그리드 뷰">⊞</button>
-                    <button class="view-mode-btn" data-view="list" title="리스트 뷰">☰</button>
-                    <button class="view-mode-btn" data-view="compact" title="컴팩트 뷰">⊟</button>
-                </div>
+            <div class="card">
+                <h3>동아리 목록</h3>
+                <p>다양한 동아리 정보를 살펴보세요</p>
+                <a href="#" class="card-link">바로가기 →</a>
             </div>
-            
-            <div class="loading-spinner" id="loadingSpinner">
-                <div class="spinner"></div>
-                <p>동아리 정보를 불러오는 중...</p>
+            <div class="card">
+                <h3>홍보 게시판</h3>
+                <p>학교 소식과 이벤트를 확인하세요</p>
+                <a href="#" class="card-link">바로가기 →</a>
             </div>
-
-            <div class="clubs-grid" id="clubsGrid">
-                <!-- 동아리 카드들이 여기에 표시됩니다 -->
+            <div class="card">
+                <h3>교내 장학금</h3>
+                <p>교내 장학금 정보를 확인하세요</p>
+                <a href="#" class="card-link">바로가기 →</a>
             </div>
-
-            <div class="pagination" id="pagination">
-                <!-- 페이지네이션 버튼들이 여기에 표시됩니다 -->
+            <div class="card">
+                <h3>교외 장학금</h3>
+                <p>외부 장학금 정보를 확인하세요</p>
+                <a href="#" class="card-link">바로가기 →</a>
             </div>
-
-            <div class="empty-state" id="emptyState">
-                <div class="empty-icon">🔍</div>
-                <div class="empty-message">검색 결과가 없습니다</div>
-                <div class="empty-submessage">다른 키워드로 검색해보세요</div>
-            </div>
-        </section>
-
-        <!-- 즐겨찾기 섹션 -->
-        <section class="favorites-section" id="favoritesSection">
-            <div class="section-header">
-                <h2 class="section-title">⭐ 즐겨찾기</h2>
-                <p class="section-description">관심있는 동아리들을 모아보세요</p>
-            </div>
-            <div class="clubs-grid" id="favoritesGrid">
-                <!-- 즐겨찾기 동아리들이 여기에 표시됩니다 -->
-            </div>
-        </section>
-
-        <!-- 추천 동아리 -->
-        <section class="recommendations">
-            <h3>🎯 맞춤 추천 동아리</h3>
-            <p>당신의 관심사를 바탕으로 추천해드려요</p>
-            <div class="recommendation-cards">
-                <div class="recommendation-card" data-club-id="3">
-                    <h4>🏸 하이클리어</h4>
-                    <p>운동을 좋아하시는군요! 배드민턴으로 건강도 챙기고 친구도 만나보세요.</p>
-                </div>
-                <div class="recommendation-card" data-club-id="2">
-                    <h4>📸 효성사진연구회</h4>
-                    <p>아름다운 순간을 포착하고 싶으신가요? 사진으로 추억을 남겨보세요.</p>
-                </div>
-                <div class="recommendation-card" data-club-id="6">
-                    <h4>🏕️ 자유의지</h4>
-                    <p>새로운 곳을 탐험하고 싶다면? 여행으로 세상을 만나보세요.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 통계 섹션 -->
-        <section class="stats-section">
-            <div class="section-header">
-                <h2 class="section-title">📊 동아리 현황</h2>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">⚽</div>
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">체육 동아리</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🎨</div>
-                    <div class="stat-number">4</div>
-                    <div class="stat-label">예술 동아리</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🎮</div>
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">취미 동아리</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🤝</div>
-                    <div class="stat-number">1</div>
-                    <div class="stat-label">봉사 동아리</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ 섹션 -->
-        <section class="faq-section">
-            <div class="section-header">
-                <h2 class="section-title">🙋‍♀️ 자주 묻는 질문</h2>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">
-                    <span>동아리 가입은 언제까지 가능한가요?</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>대부분의 동아리는 학기 초 2-3주 동안 신입회원을 모집합니다. 하지만 일부 동아리는 연중 수시로 모집하기도 하니 각 동아리 페이지를 확인해보세요.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">
-                    <span>여러 동아리에 동시에 가입할 수 있나요?</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>네, 가능합니다. 다만 각 동아리의 활동 시간과 회비 부담을 고려하여 신중하게 선택하시기 바랍니다.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">
-                    <span>동아리 활동이 학점에 영향을 주나요?</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>동아리 활동 자체는 학점에 직접적인 영향을 주지 않습니다. 하지만 봉사활동이나 대외활동 등은 졸업요건이나 장학금 선발에 도움이 될 수 있습니다.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 캠퍼스 맵 -->
-        <section class="map-section">
-            <div class="section-header">
-                <h2 class="section-title">🗺️ 캠퍼스 맵</h2>
-                <p class="section-description">동아리방 위치를 확인해보세요</p>
-            </div>
-            <div class="map-container">
-                <div class="map-placeholder">
-                    <h3>🏫 캠퍼스 지도</h3>
-                    <p>동아리방 위치 정보가 여기에 표시됩니다</p>
-                    <button class="modal-btn primary" onclick="showToast('지도 기능은 준비 중입니다', 'warning')">상세 지도 보기</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 비교 섹션 -->
-    <div class="compare-section" id="compareSection">
-        <div class="compare-header">
-            <h3>동아리 비교</h3>
-            <button onclick="clearComparison()">전체 삭제</button>
-        </div>
-        <div class="compare-clubs" id="compareClubs">
-            <!-- 비교할 동아리들이 여기에 표시됩니다 -->
-        </div>
-    </div>
-
-    <!-- 플로팅 액션 버튼 -->
-    <div class="floating-actions">
-        <button class="fab secondary" onclick="scrollToTop()" title="맨 위로">↑</button>
-        <button class="fab secondary" onclick="toggleRandomClub()" title="랜덤 동아리">🎲</button>
-        <button class="fab" onclick="showContact()" title="문의하기">💬</button>
-    </div>
-
-    <!-- 모달 -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <div class="modal-header">
-                <button class="modal-close" id="modalClose">✕</button>
-            </div>
-            <div class="modal-tabs" id="modalTabs">
-                <button class="modal-tab active" data-tab="info">기본 정보</button>
-                <button class="modal-tab" data-tab="gallery">갤러리</button>
-                <button class="modal-tab" data-tab="contact">연락처</button>
-            </div>
-            <div class="modal-content" id="modalContent">
-                <!-- 탭 내용이 여기에 표시됩니다 -->
-            </div>
-            <div class="modal-actions" id="modalActions">
-                <!-- 액션 버튼들이 여기에 표시됩니다 -->
+            <div class="card">
+                <h3>학생 지원</h3>
+                <p>각종 학생 지원 서비스를 이용하세요</p>
+                <a href="#" class="card-link">바로가기 →</a>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- 토스트 알림 -->
-    <div class="toast" id="toast">
-        <span id="toastMessage"></span>
-    </div>
+    <section class="info" id="info">
+        <div class="info-container">
+            <div class="info-box">
+                <h3>공지사항</h3>
+                <div class="info-item">
+                    <h4>2025년 1학기 수강신청 안내</h4>
+                    <span>2025.02.15</span>
+                </div>
+                <div class="info-item">
+                    <h4>신입생 오리엔테이션</h4>
+                    <span>2025.02.20</span>
+                </div>
+                <div class="info-item">
+                    <h4>교내 장학금 신청 연장</h4>
+                    <span>2025.02.25</span>
+                </div>
+                <div class="info-item">
+                    <h4>봄 축제 부스 신청</h4>
+                    <span>2025.03.01</span>
+                </div>
+            </div>
+            <div class="info-box">
+                <h3>주요 행사</h3>
+                <div class="info-item">
+                    <h4>DCU 봄 축제</h4>
+                    <span>2025.04.15 - 04.17</span>
+                </div>
+                <div class="info-item">
+                    <h4>취업박람회</h4>
+                    <span>2025.05.20</span>
+                </div>
+                <div class="info-item">
+                    <h4>학술제</h4>
+                    <span>2025.06.10</span>
+                </div>
+                <div class="info-item">
+                    <h4>어학연수 설명회</h4>
+                    <span>2025.03.25</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p><strong>대구가톨릭대학교 동아리 소개</strong></p>
-                <p>학생들의 꿈과 열정이 만나는 공간</p>
-                <div class="social-links">
-                    <a href="#" class="social-link" title="페이스북">📘</a>
-                    <a href="#" class="social-link" title="인스타그램">📷</a>
-                    <a href="#" class="social-link" title="유튜브">📺</a>
-                    <a href="mailto:student@cu.ac.kr" class="social-link" title="이메일">✉️</a>
-                </div>
-                <p style="margin-top: 2rem; opacity: 0.7;">📞 학생지원팀: 053-850-3114 | ✉️ student@cu.ac.kr</p>
-                <p style="margin-top: 1rem; opacity: 0.7;">© 2025 대구가톨릭대학교. Made with ❤️ by DCU Students</p>
-            </div>
+        <h3>DCU Portal</h3>
+        <p>대구가톨릭대학교 학생 포털</p>
+        <div class="footer-links">
+            <a href="#">소개</a>
+            <a href="#">문의</a>
+            <a href="#">이용약관</a>
+            <a href="#">개인정보처리방침</a>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 DCU Portal</p>
         </div>
     </footer>
 
     <script>
-// 동아리 데이터 (확장된 정보 포함)
-const clubsData = [
-    {
-        id: 1,
-        name: "노리 NC",
-        category: "체육",
-        categoryEn: "sports",
-        icon: "⚽",
-        description: "대구가톨릭대학교 축구•풋살 동아리 노리NC입니다. 축구와 풋살을 사랑하는 학생들이 모여 실력 향상과 팀워크를 기르는 동아리입니다. 실력보다는 친목을 중요하게 생각하며, 여성분들은 매니저로 참여 가능합니다.",
-        fee: "일반회원: 30,000원, 매니저: 15,000원",
-        contact: "인스타그램: dcu_nori, 신기준: 010-8361-0113",
-        link: "https://everytime.kr/367543/v/389401637",
-        status: "모집중",
-        rating: 4.5,
-        memberCount: 45,
-        activityDay: "weekday",
-        tags: ["축구", "풋살", "친목", "건강"],
-        popularity: 85,
-        views: 156,
-        established: "2020",
-        location: "체육관",
-        meetingTime: "주 3회 (월, 수, 금 18:00-20:00)"
-    },
-    {
-        id: 2,
-        name: "효성사진연구회",
-        category: "사진",
-        categoryEn: "hobby",
-        icon: "📸",
-        description: "대구가톨릭대 중앙동아리 소속 효성사진연구회입니다. 사진을 잘 찍고 싶거나, 사진 찍는 걸 좋아하는 분, 카메라에 관심이 있는 분들을 환영합니다. 은행로드 스냅사진, 출사, 전시회, 카메라 대여 등 다양한 활동을 진행합니다.",
-        fee: "기존회원: 20,000원, 신입회원: 25,000원",
-        contact: "회장: 010-9327-0535, 부회장: 010-8829-9762",
-        link: "https://everytime.kr/389139/v/389392180",
-        status: "모집중",
-        rating: 4.7,
-        memberCount: 32,
-        activityDay: "flexible",
-        tags: ["사진", "출사", "전시회", "창작"],
-        popularity: 92,
-        views: 203,
-        established: "2018",
-        location: "동아리방 B동 301호",
-        meetingTime: "주 1회 (토요일 14:00-17:00)"
-    },
-    {
-        id: 3,
-        name: "하이클리어",
-        category: "체육",
-        categoryEn: "sports",
-        icon: "🏸",
-        description: "대구가톨릭대학교 대표 배드민턴 동아리 하이클리어입니다! 배드민턴을 잘하지 못해도, 혼자 가입해도, 장비가 없어도 괜찮습니다. 라켓, 신발, 셔틀콕 등 장비 대여가 가능하며 다양한 행사를 통해 즐거운 추억을 만들 수 있습니다.",
-        fee: "20,000원",
-        contact: "인스타그램에서 하이클리어 검색",
-        link: "https://everytime.kr/418870/v/389419403",
-        status: "모집중",
-        rating: 4.6,
-        memberCount: 38,
-        activityDay: "weekday",
-        tags: ["배드민턴", "초보환영", "장비대여", "체력"],
-        popularity: 88,
-        views: 178,
-        established: "2019",
-        location: "체육관",
-        meetingTime: "주 2회 (화, 목 19:00-21:00)"
-    },
-    {
-        id: 4,
-        name: "춤사랑",
-        category: "댄스",
-        categoryEn: "art",
-        icon: "🪩",
-        description: "대구가톨릭대학교 교내 유일 댄스동아리 춤사랑입니다! 공연부와 일반부로 나누어 모집하며, 정규연습을 통해 함께 춤을 배우고 교내외 공연에 참여할 수 있습니다. 댄스에 관심이 있는 모든 분들을 환영합니다.",
-        fee: "10,000원",
-        contact: "인스타그램: @dcu_dl_crew",
-        link: "https://everytime.kr/418870/v/389225834",
-        status: "모집중",
-        rating: 4.4,
-        memberCount: 28,
-        activityDay: "weekday",
-        tags: ["댄스", "공연", "K-POP", "무대"],
-        popularity: 90,
-        views: 189,
-        established: "2017",
-        location: "무용실",
-        meetingTime: "주 3회 (월, 수, 금 18:30-20:30)"
-    },
-    {
-        id: 5,
-        name: "루미큐브",
-        category: "보드게임",
-        categoryEn: "hobby",
-        icon: "🎲",
-        description: "대구가톨릭대학교 보드게임 동아리 루미큐브입니다! 보드게임을 하고 싶은 재학생을 모집합니다. 신환회, MT, 방탈출 카페, 온라인 보드게임 등 다양한 활동을 하며, 여러 매장과 제휴하여 혜택도 제공합니다.",
-        fee: "신규 부원: 30,000원",
-        contact: "인스타그램: @dcu_rummikub",
-        link: "https://everytime.kr/418870/v/389134539",
-        status: "모집중",
-        rating: 4.3,
-        memberCount: 25,
-        activityDay: "flexible",
-        tags: ["보드게임", "전략", "친목", "두뇌"],
-        popularity: 75,
-        views: 134,
-        established: "2021",
-        location: "동아리방 C동 205호",
-        meetingTime: "주 2회 (수, 토 19:00-22:00)"
-    },
-    {
-        id: 6,
-        name: "자유의지",
-        category: "여행",
-        categoryEn: "hobby",
-        icon: "🏕️",
-        description: "중앙동아리 자유의지입니다! 1년에 총 4번의 여행을 가는 여행동아리로, 정기총회, 회식, 테마활동, 조별활동 등을 통해 선후배와 함께 특별한 추억을 만듭니다. 영남대학교 자유의지와 연합활동도 진행합니다.",
-        fee: "신입부원: 25,000원, 기존부원: 15,000원",
-        contact: "회장: 010-2512-7970, 인스타그램: @freewill_dcu",
-        link: "https://everytime.kr/418870/v/389141980",
-        status: "모집중",
-        rating: 4.8,
-        memberCount: 42,
-        activityDay: "weekend",
-        tags: ["여행", "추억", "연합활동", "자연"],
-        popularity: 95,
-        views: 245,
-        established: "2016",
-        location: "동아리방 A동 401호",
-        meetingTime: "주 1회 (일요일 15:00-17:00)"
-    },
-    {
-        id: 7,
-        name: "소리결",
-        category: "음악",
-        categoryEn: "art",
-        icon: "🎵",
-        description: "공연예술분과 밴드 동아리 소리결입니다! 다양한 장르를 다루는 밴드 동아리로, 가입 오디션은 없습니다. 음악을 좋아하는 마음만 있다면 누구나 환영합니다. 정기회의, 버스킹, 악기 강습, 합주 등의 활동을 진행합니다.",
-        fee: "문의필요",
-        contact: "공식 SNS: @dcu_sound_wave",
-        link: "https://everytime.kr/389139/v/389308406",
-        status: "모집중",
-        rating: 4.5,
-        memberCount: 35,
-        activityDay: "weekday",
-        tags: ["음악", "밴드", "버스킹", "공연"],
-        popularity: 87,
-        views: 167,
-        established: "2019",
-        location: "음악실",
-        meetingTime: "주 2회 (화, 금 19:00-21:00)"
-    },
-    {
-        id: 8,
-        name: "MAVERICK",
-        category: "힙합",
-        categoryEn: "art",
-        icon: "🎤",
-        description: "힙합 동아리 메버릭입니다! 힙합(R&B)를 좋아하고 관심있는 사람, 비트 프로듀싱에 관심이 있는 사람을 모집합니다. 70만원 상당의 녹음 장비를 보유하고 있으며, 오디션은 없습니다. 동아리방이 2개인 유일한 중앙동아리입니다.",
-        fee: "20,000원",
-        link: "https://everytime.kr/418870/v/389168077",
-        status: "모집중",
-        rating: 4.2,
-        memberCount: 22,
-        activityDay: "flexible",
-        tags: ["힙합", "랩", "프로듀싱", "녹음"],
-        popularity: 80,
-        views: 145,
-        established: "2020",
-        location: "동아리방 A동 302호, 303호",
-        meetingTime: "주 2회 (수, 토 18:00-21:00)"
-    },
-    {
-        id: 9,
-        name: "MIRS",
-        category: "야구",
-        categoryEn: "sports",
-        icon: "⚾",
-        description: "대구가톨릭대학교 야구동아리 MIRS입니다! 여러 대회에서 우승 경력이 있는 실력있는 야구동아리입니다. 선수뿐만 아니라 매니저도 모집하며, 정기 연습은 월 2-3회 진행됩니다. 라이온즈파크 경기 관람도 함께 합니다.",
-        fee: "선수: 50,000원, 매니저: 25,000원",
-        contact: "회장: 010-6624-2201, 인스타그램: @dcu_mirs_official",
-        link: "https://everytime.kr/418870/v/389411871",
-        status: "모집중",
-        rating: 4.6,
-        memberCount: 33,
-        activityDay: "weekend",
-        tags: ["야구", "대회", "실력", "팀워크"],
-        popularity: 83,
-        views: 162,
-        established: "2015",
-        location: "야구장",
-        meetingTime: "주 2회 (토, 일 14:00-17:00)"
-    },
-    {
-        id: 10,
-        name: "스타응원단",
-        category: "치어리딩",
-        categoryEn: "sports",
-        icon: "🪽",
-        description: "제 27대 대구가톨릭대학교 치어리딩 동아리 스타응원단입니다! 성실하고 치어리딩에 열정 가득한 사람을 모집합니다. 간단한 면접과 동작 테스트가 있으며, 한번 가입 시 다음 학기에는 회비를 내지 않습니다.",
-        fee: "49,000원 (한번만 납부)",
-        contact: "스타응원단 공식 인스타그램: @starcheer1999",
-        link: "https://everytime.kr/389139/v/389220386",
-        status: "모집중",
-        rating: 4.7,
-        memberCount: 18,
-        activityDay: "weekday",
-        tags: ["치어리딩", "응원", "공연", "열정"],
-        popularity: 89,
-        views: 198,
-        established: "1999",
-        location: "체육관",
-        meetingTime: "주 3회 (월, 수, 금 17:00-19:00)"
-    },
-    {
-        id: 11,
-        name: "타요",
-        category: "여행",
-        categoryEn: "hobby",
-        icon: "🚌",
-        description: "여행 동아리 타요입니다! 21학번 이상을 대상으로 신입부원을 모집합니다. 매주 목요일 정규 회의를 진행하며, 신입부원 환영회, MT, 여행, 글램핑 등 다양한 활동을 합니다. 동아리방 자유이용과 스텔라 혜택이 있습니다.",
-        fee: "기존: 15,000원, 신규: 25,000원",
-        contact: "010-6399-4725",
-        link: "https://everytime.kr/418870/v/389410617",
-        status: "모집중",
-        rating: 4.4,
-        memberCount: 29,
-        activityDay: "weekday",
-        tags: ["여행", "글램핑", "MT", "힐링"],
-        popularity: 78,
-        views: 143,
-        established: "2021",
-        location: "동아리방 B동 202호",
-        meetingTime: "주 1회 (목요일 18:00-20:00)"
-    },
-    {
-        id: 12,
-        name: "레드리프",
-        category: "밴드",
-        categoryEn: "art",
-        icon: "🎸",
-        description: "대구가톨릭대학교 대표 밴드 동아리 레드리프입니다! 밴드와 노래, 악기 연주에 관심이 있는 모든 분들을 환영합니다. 기수제로 운영되며, 보컬, 기타, 베이스, 드럼, 키보드 파트로 구성됩니다. 정기공연을 통해 무대 경험을 쌓을 수 있습니다.",
-        fee: "문의필요",
-        contact: "회장 김시형: 010-2940-7617, 인스타그램: @ledr1f_official",
-        link: "",
-        status: "모집중",
-        rating: 4.5,
-        memberCount: 31,
-        activityDay: "weekday",
-        tags: ["밴드", "록", "정기공연", "기수제"],
-        popularity: 86,
-        views: 174,
-        established: "2018",
-        location: "음악실",
-        meetingTime: "주 3회 (월, 수, 금 19:00-22:00)"
-    },
-    {
-        id: 13,
-        name: "한울회",
-        category: "봉사",
-        categoryEn: "volunteer",
-        icon: "🤝",
-        description: "한울회는 5개교 연합 봉사 동아리입니다! 한국청소년 대구연맹 단체에서 주관하는 체험학습에 아이들을 인솔하는 봉사활동을 합니다. 교내 활동과 연합 활동을 통해 다양한 경험을 쌓을 수 있으며, 25학번 신입생만 모집합니다.",
-        fee: "39,000원",
-        contact: "인스타그램에서 한울회 검색",
-        link: "https://everytime.kr/367543/v/389444502",
-        status: "모집중",
-        rating: 4.8,
-        memberCount: 26,
-        activityDay: "weekend",
-        tags: ["봉사", "아이들", "연합활동", "체험학습"],
-        popularity: 91,
-        views: 187,
-        established: "2010",
-        location: "동아리방 C동 101호",
-        meetingTime: "주 1회 (토요일 10:00-12:00)"
-    },
-    {
-        id: 14,
-        name: "다람공방",
-        category: "DIY",
-        categoryEn: "hobby",
-        icon: "🐿️",
-        description: "DIY동아리 다람공방입니다! 모루인형 만들기, 지점토 마그넷 만들기, 보석십자수 키링 만들기 등 다양한 DIY 활동을 합니다. 월요일 오후 5시부터 7시까지 활동하며, 간단한 면접이 있습니다.",
-        fee: "20,000원",
-        contact: "카카오톡: http://pf.kakao.com/_xexiuzn/chat, 인스타그램: @diy_daram",
-        link: "https://everytime.kr/367543/v/389374169",
-        status: "모집중",
-        rating: 4.3,
-        memberCount: 19,
-        activityDay: "weekday",
-        tags: ["DIY", "수공예", "창작", "힐링"],
-        popularity: 72,
-        views: 128,
-        established: "2022",
-        location: "동아리방 C동 301호",
-        meetingTime: "주 1회 (월요일 17:00-19:00)"
-    },
-    {
-        id: 15,
-        name: "스커드엔젤스",
-        category: "미식축구",
-        categoryEn: "sports",
-        icon: "🏈",
-        description: "대구가톨릭대학교 미식축구부 스커드엔젤스입니다! 2025년 대구경북 미식축구 추계대회 우승과 전국대회 진출을 목표로 합니다. 매주 3-5일 정기연습을 하며, 선수와 매니저를 모집합니다. 운동 실력보다는 열정이 중요합니다!",
-        fee: "문의필요",
-        contact: "인스타그램: @scud_angles",
-        link: "https://everytime.kr/418870/v/389317240",
-        status: "모집중",
-        rating: 4.1,
-        memberCount: 24,
-        activityDay: "weekday",
-        tags: ["미식축구", "대회", "열정", "도전"],
-        popularity: 77,
-        views: 139,
-        established: "2020",
-        location: "운동장",
-        meetingTime: "주 4회 (월, 화, 목, 금 18:00-20:00)"
-    }
-];
-
-// 리뷰 데이터
-const reviewsData = {
-    1: [
-        { author: "김**", date: "2024-12-15", rating: 5, text: "정말 친목 위주로 운영되어서 좋아요! 축구 실력이 별로여도 따뜻하게 받아주셔서 감사했습니다." },
-        { author: "이**", date: "2024-12-10", rating: 4, text: "매니저로 참여했는데 정말 즐거운 경험이었습니다. 선배들이 친절해요." }
-    ],
-    2: [
-        { author: "박**", date: "2024-12-18", rating: 5, text: "사진 실력이 정말 늘어요! 출사도 재미있고 전시회도 열어서 뿌듯합니다." },
-        { author: "최**", date: "2024-12-12", rating: 5, text: "카메라 대여 서비스가 정말 좋아요. 비싼 장비도 써볼 수 있어서 만족해요." }
-    ],
-    3: [
-        { author: "정**", date: "2024-12-20", rating: 5, text: "배드민턴 처음 해봤는데 정말 재미있어요! 장비 걱정 없이 시작할 수 있어서 좋습니다." },
-        { author: "강**", date: "2024-12-14", rating: 4, text: "운동도 되고 스트레스도 풀려서 일석이조입니다." }
-    ],
-    13: [
-        { author: "윤**", date: "2024-12-22", rating: 5, text: "봉사활동을 통해 보람을 많이 느껴요. 아이들과 함께하는 시간이 정말 소중해요." },
-        { author: "서**", date: "2024-12-16", rating: 5, text: "다른 학교 학생들과도 교류할 수 있어서 좋습니다. 인맥도 넓어져요." }
-    ]
-};
-
-// 전역 변수
-let currentFilter = 'all';
-let currentView = 'grid';
-let currentSort = 'name';
-let currentPage = 1;
-let itemsPerPage = 12;
-let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-let compareList = [];
-let viewCount = parseInt(localStorage.getItem('totalViews') || '1247');
-let showFavorites = false;
-
-// 페이지 로드 시 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-    updateStats();
-    createClubCards();
-    setupEventListeners();
-    updateFilterBadges();
-    
-    // 애니메이션 효과
-    setTimeout(() => {
-        document.querySelectorAll('.club-card').forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('animate-fade-in');
-            }, index * 100);
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
-    }, 500);
-});
-
-// 앱 초기화
-function initializeApp() {
-    // 다크모드 설정 복원
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        document.getElementById('darkModeToggle').textContent = '☀️ 라이트모드';
-    }
-    
-    // 조회수 업데이트
-    viewCount++;
-    localStorage.setItem('totalViews', viewCount.toString());
-}
-
-// 통계 업데이트
-function updateStats() {
-    document.getElementById('totalClubs').textContent = clubsData.length;
-    document.getElementById('activeClubs').textContent = clubsData.filter(club => club.status === '모집중').length;
-    document.getElementById('totalViews').textContent = viewCount.toLocaleString();
-    document.getElementById('displayCount').textContent = clubsData.length;
-}
-
-// 필터 배지 업데이트
-function updateFilterBadges() {
-    const categories = ['all', 'academic', 'sports', 'art', 'volunteer', 'hobby', 'religion'];
-    categories.forEach(category => {
-        const btn = document.querySelector(`[data-category="${category}"]`);
-        const badge = btn.querySelector('.badge');
-        if (badge) {
-            if (category === 'all') {
-                badge.textContent = clubsData.length;
-            } else {
-                badge.textContent = clubsData.filter(club => club.categoryEn === category).length;
-            }
-        }
-    });
-}
-
-// 동아리 카드 생성
-function createClubCards() {
-    const grid = document.getElementById('clubsGrid');
-    const favoritesGrid = document.getElementById('favoritesGrid');
-    if (!grid) return;
-    
-    let filteredClubs = filterAndSortClubs();
-    
-    // 페이지네이션 적용
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedClubs = filteredClubs.slice(startIndex, endIndex);
-    
-    const cardHTML = paginatedClubs.map(club => createClubCardHTML(club)).join('');
-    
-    if (showFavorites) {
-        const favoriteClubs = clubsData.filter(club => favorites.includes(club.id));
-        favoritesGrid.innerHTML = favoriteClubs.map(club => createClubCardHTML(club)).join('');
-    } else {
-        grid.innerHTML = cardHTML;
-    }
-    
-    // 클릭 이벤트 추가
-    document.querySelectorAll('.club-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (e.target.closest('.favorite-btn') || e.target.closest('.compare-btn')) return;
-            const clubId = parseInt(this.dataset.clubId);
-            const club = clubsData.find(c => c.id === clubId);
-            if (club) {
-                // 조회수 증가
-                club.views++;
-                showModal(club);
-            }
-        });
-    });
-    
-    updatePagination(filteredClubs.length);
-    updateDisplayCount(filteredClubs.length);
-}
-
-// 동아리 카드 HTML 생성
-function createClubCardHTML(club) {
-    const isFavorite = favorites.includes(club.id);
-    const isInCompare = compareList.some(c => c.id === club.id);
-    
-    return `
-        <div class="club-card" data-category="${club.categoryEn}" data-club-id="${club.id}">
-            ${club.popularity > 85 ? '<div class="popularity-badge">🔥 인기</div>' : ''}
-            <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite(${club.id}, event)">
-                ${isFavorite ? '❤️' : '🤍'}
-            </button>
-            <div class="club-image">${club.icon}</div>
-            <div class="club-header">
-                <div class="club-icon">${club.icon}</div>
-                <span class="club-category">${club.category}</span>
-                <h3 class="club-name">${club.name}</h3>
-                <div class="club-rating">
-                    <div class="stars">${generateStars(club.rating)}</div>
-                    <span class="rating-text">${club.rating} (${getReviewCount(club.id)})</span>
-                </div>
-                <div class="club-tags">
-                    ${club.tags.slice(0, 3).map(tag => `<span class="club-tag">#${tag}</span>`).join('')}
-                </div>
-                <p class="club-description">${club.description.length > 120 ? club.description.substring(0, 120) + '...' : club.description}</p>
-            </div>
-            <div class="club-footer">
-                <div class="club-members">${club.fee}</div>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <button class="modal-btn secondary" onclick="addToCompare(${club.id}, event)" 
-                            ${isInCompare ? 'disabled' : ''} style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
-                        ${isInCompare ? '✓ 비교중' : '📊 비교'}
-                    </button>
-                    <span class="club-status">${club.status}</span>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// 별점 생성
-function generateStars(rating) {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    let stars = '';
-    
-    for (let i = 0; i < fullStars; i++) {
-        stars += '<span class="star">★</span>';
-    }
-    if (hasHalfStar) {
-        stars += '<span class="star">☆</span>';
-    }
-    for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
-        stars += '<span class="star" style="color: #e5e7eb;">☆</span>';
-    }
-    
-    return stars;
-}
-
-// 리뷰 개수 가져오기
-function getReviewCount(clubId) {
-    return reviewsData[clubId] ? reviewsData[clubId].length : 0;
-}
-
-// 필터링 및 정렬
-function filterAndSortClubs() {
-    let filtered = clubsData.filter(club => {
-        const matchesCategory = currentFilter === 'all' || club.categoryEn === currentFilter;
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const matchesSearch = !searchTerm || 
-            club.name.toLowerCase().includes(searchTerm) ||
-            club.description.toLowerCase().includes(searchTerm) ||
-            club.category.toLowerCase().includes(searchTerm) ||
-            club.tags.some(tag => tag.toLowerCase().includes(searchTerm));
-        
-        // 고급 필터 적용
-        const feeRange = document.getElementById('feeRange').value;
-        const minRating = document.getElementById('minRating').value;
-        const activityDay = document.getElementById('activityDay').value;
-        
-        let matchesFee = true;
-        if (feeRange) {
-            const [min, max] = feeRange.split('-').map(Number);
-            const clubFee = extractFeeAmount(club.fee);
-            matchesFee = clubFee >= min && clubFee <= max;
-        }
-        
-        const matchesRating = !minRating || club.rating >= parseFloat(minRating);
-        const matchesDay = !activityDay || club.activityDay === activityDay;
-        
-        return matchesCategory && matchesSearch && matchesFee && matchesRating && matchesDay;
-    });
-    
-    // 정렬
-    filtered.sort((a, b) => {
-        switch (currentSort) {
-            case 'name':
-                return a.name.localeCompare(b.name);
-            case 'category':
-                return a.category.localeCompare(b.category);
-            case 'popularity':
-                return b.popularity - a.popularity;
-            case 'rating':
-                return b.rating - a.rating;
-            case 'recent':
-                return b.views - a.views;
-            default:
-                return 0;
-        }
-    });
-    
-    return filtered;
-}
-
-// 회비에서 숫자 추출
-function extractFeeAmount(feeText) {
-    const numbers = feeText.match(/\d+/g);
-    return numbers ? parseInt(numbers[0]) : 0;
-}
-
-// 즐겨찾기 토글
-function toggleFavorite(clubId, event) {
-    event.stopPropagation();
-    const index = favorites.indexOf(clubId);
-    
-    if (index === -1) {
-        favorites.push(clubId);
-        showToast('즐겨찾기에 추가되었습니다!', 'success');
-    } else {
-        favorites.splice(index, 1);
-        showToast('즐겨찾기에서 제거되었습니다.', 'warning');
-    }
-    
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    createClubCards();
-}
-
-// 비교 목록에 추가
-function addToCompare(clubId, event) {
-    event.stopPropagation();
-    
-    if (compareList.length >= 3) {
-        showToast('최대 3개까지만 비교할 수 있습니다.', 'error');
-        return;
-    }
-    
-    const club = clubsData.find(c => c.id === clubId);
-    if (club && !compareList.some(c => c.id === clubId)) {
-        compareList.push(club);
-        updateCompareSection();
-        showToast(`${club.name}이(가) 비교 목록에 추가되었습니다.`, 'success');
-        createClubCards();
-    }
-}
-
-// 비교 섹션 업데이트
-function updateCompareSection() {
-    const compareSection = document.getElementById('compareSection');
-    const compareClubs = document.getElementById('compareClubs');
-    
-    if (compareList.length > 0) {
-        compareSection.classList.add('active');
-        compareClubs.innerHTML = compareList.map(club => `
-            <div class="compare-club">
-                <button class="compare-remove" onclick="removeFromCompare(${club.id})">×</button>
-                <h4>${club.name}</h4>
-                <p>분야: ${club.category}</p>
-                <p>회비: ${club.fee}</p>
-                <p>평점: ${club.rating}점</p>
-                <p>회원: ${club.memberCount}명</p>
-            </div>
-        `).join('');
-    } else {
-        compareSection.classList.remove('active');
-    }
-}
-
-// 비교에서 제거
-function removeFromCompare(clubId) {
-    compareList = compareList.filter(club => club.id !== clubId);
-    updateCompareSection();
-    createClubCards();
-    showToast('비교 목록에서 제거되었습니다.', 'warning');
-}
-
-// 비교 목록 전체 삭제
-function clearComparison() {
-    compareList = [];
-    updateCompareSection();
-    createClubCards();
-    showToast('비교 목록이 초기화되었습니다.', 'warning');
-}
-
-// 페이지네이션 업데이트
-function updatePagination(totalItems) {
-    const pagination = document.getElementById('pagination');
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    
-    if (totalPages <= 1) {
-        pagination.innerHTML = '';
-        return;
-    }
-    
-    let paginationHTML = '';
-    
-    // 이전 버튼
-    paginationHTML += `
-        <button class="pagination-btn" onclick="changePage(${currentPage - 1})" 
-                ${currentPage === 1 ? 'disabled' : ''}>이전</button>
-    `;
-    
-    // 페이지 번호
-    for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
-            paginationHTML += `
-                <button class="pagination-btn ${i === currentPage ? 'active' : ''}" 
-                        onclick="changePage(${i})">${i}</button>
-            `;
-        } else if (i === currentPage - 3 || i === currentPage + 3) {
-            paginationHTML += '<span>...</span>';
-        }
-    }
-    
-    // 다음 버튼
-    paginationHTML += `
-        <button class="pagination-btn" onclick="changePage(${currentPage + 1})" 
-                ${currentPage === totalPages ? 'disabled' : ''}>다음</button>
-    `;
-    
-    pagination.innerHTML = paginationHTML;
-}
-
-// 페이지 변경
-function changePage(page) {
-    const totalItems = filterAndSortClubs().length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    
-    if (page < 1 || page > totalPages) return;
-    
-    currentPage = page;
-    createClubCards();
-    scrollToTop();
-}
-
-// 표시 개수 업데이트
-function updateDisplayCount(count) {
-    document.getElementById('displayCount').textContent = count;
-}
-
-// 모달 표시
-function showModal(club) {
-    const overlay = document.getElementById('modalOverlay');
-    const tabs = document.getElementById('modalTabs');
-    const content = document.getElementById('modalContent');
-    const actions = document.getElementById('modalActions');
-    
-    // 리뷰 개수 업데이트
-    document.getElementById('reviewCount').textContent = getReviewCount(club.id);
-    
-    // 기본 정보 탭 내용
-    const infoContent = `
-        <h2 class="modal-club-name">${club.name}</h2>
-        <span class="modal-club-category">${club.category}</span>
-        <div class="club-rating">
-            <div class="stars">${generateStars(club.rating)}</div>
-            <span class="rating-text">${club.rating}점 (리뷰 ${getReviewCount(club.id)}개)</span>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">📝 동아리 소개</div>
-            <div class="modal-section-content">${club.description}</div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">💰 회비 정보</div>
-            <div class="modal-section-content">${club.fee}</div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">👥 회원 정보</div>
-            <div class="modal-section-content">
-                현재 회원수: ${club.memberCount}명<br>
-                설립년도: ${club.established}년<br>
-                활동 장소: ${club.location}<br>
-                모임 시간: ${club.meetingTime}
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">🏷️ 태그</div>
-            <div class="modal-section-content">
-                ${club.tags.map(tag => `<span class="club-tag">#${tag}</span>`).join(' ')}
-            </div>
-        </div>
-    `;
-    
-    content.innerHTML = infoContent;
-    
-    // 탭 이벤트 설정
-    setupModalTabs(club);
-    
-    // 액션 버튼
-    actions.innerHTML = `
-        <button class="modal-btn secondary" onclick="closeModal()">닫기</button>
-        <button class="modal-btn warning" onclick="toggleFavorite(${club.id}); closeModal();">
-            ${favorites.includes(club.id) ? '💔 즐겨찾기 해제' : '❤️ 즐겨찾기 추가'}
-        </button>
-        ${club.link ? `<a href="${club.link}" target="_blank" class="modal-btn primary">🔗 자세히 보기</a>` : ''}
-        <button class="modal-btn success" onclick="showContactModal('${club.contact}')">📞 문의하기</button>
-    `;
-    
-    overlay.classList.add('active');
-}
-
-// 모달 탭 설정
-function setupModalTabs(club) {
-    const tabs = document.querySelectorAll('.modal-tab');
-    const content = document.getElementById('modalContent');
-    
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            // 탭 활성화
-            tabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            
-            // 내용 업데이트
-            const tabType = this.dataset.tab;
-            let tabContent = '';
-            
-            switch(tabType) {
-                case 'info':
-                    tabContent = getInfoTabContent(club);
-                    break;
-                case 'reviews':
-                    tabContent = getReviewsTabContent(club);
-                    break;
-                case 'gallery':
-                    tabContent = getGalleryTabContent(club);
-                    break;
-                case 'contact':
-                    tabContent = getContactTabContent(club);
-                    break;
-            }
-            
-            content.innerHTML = tabContent;
-        });
-    });
-}
-
-// 탭 내용 생성 함수들
-function getInfoTabContent(club) {
-    return `
-        <h2 class="modal-club-name">${club.name}</h2>
-        <span class="modal-club-category">${club.category}</span>
-        <div class="club-rating">
-            <div class="stars">${generateStars(club.rating)}</div>
-            <span class="rating-text">${club.rating}점 (리뷰 ${getReviewCount(club.id)}개)</span>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">📝 동아리 소개</div>
-            <div class="modal-section-content">${club.description}</div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">💰 회비 정보</div>
-            <div class="modal-section-content">${club.fee}</div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">👥 상세 정보</div>
-            <div class="modal-section-content">
-                • 현재 회원수: ${club.memberCount}명<br>
-                • 설립년도: ${club.established}년<br>
-                • 활동 장소: ${club.location}<br>
-                • 모임 시간: ${club.meetingTime}<br>
-                • 조회수: ${club.views}회<br>
-                • 인기도: ${club.popularity}/100
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">🏷️ 관련 태그</div>
-            <div class="modal-section-content">
-                ${club.tags.map(tag => `<span class="club-tag">#${tag}</span>`).join(' ')}
-            </div>
-        </div>
-    `;
-}
-
-function getReviewsTabContent(club) {
-    const reviews = reviewsData[club.id] || [];
-    
-    return `
-        <h3>📝 리뷰 (${reviews.length}개)</h3>
-        <div class="reviews-section">
-            ${reviews.map(review => `
-                <div class="review-item">
-                    <div class="review-header">
-                        <span class="review-author">${review.author}</span>
-                        <span class="review-date">${review.date}</span>
-                    </div>
-                    <div class="review-rating">${generateStars(review.rating)}</div>
-                    <div class="review-text">${review.text}</div>
-                </div>
-            `).join('')}
-            
-            ${reviews.length === 0 ? '<p style="text-align: center; color: #64748b;">아직 리뷰가 없습니다.</p>' : ''}
-        </div>
-        
-        <div class="review-form">
-            <h4>리뷰 작성하기</h4>
-            <div class="form-group">
-                <label>평점</label>
-                <div class="rating-input">
-                    ${[1,2,3,4,5].map(i => `<span class="rating-star" data-rating="${i}">☆</span>`).join('')}
-                </div>
-            </div>
-            <div class="form-group">
-                <label>리뷰 내용</label>
-                <textarea placeholder="동아리에 대한 솔직한 후기를 남겨주세요..."></textarea>
-            </div>
-            <button class="modal-btn primary" onclick="submitReview(${club.id})">리뷰 등록</button>
-        </div>
-    `;
-}
-
-function getGalleryTabContent(club) {
-    return `
-        <h3>📸 갤러리</h3>
-        <div class="gallery">
-            ${Array.from({length: 6}, (_, i) => `
-                <div class="gallery-item">
-                    ${club.icon}
-                </div>
-            `).join('')}
-        </div>
-        <p style="text-align: center; color: #64748b; margin-top: 1rem;">
-            실제 활동 사진들이 여기에 표시됩니다.
-        </p>
-    `;
-}
-
-function getContactTabContent(club) {
-    return `
-        <h3>📞 연락처 정보</h3>
-        <div class="modal-section">
-            <div class="modal-section-title">📱 동아리 연락처</div>
-            <div class="modal-section-content">${club.contact}</div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">🏫 학교 연락처</div>
-            <div class="modal-section-content">
-                • 학생지원팀: 053-850-3114<br>
-                • 이메일: student@cu.ac.kr<br>
-                • 운영시간: 평일 09:00-18:00
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">💡 문의 방법</div>
-            <div class="modal-section-content">
-                1. 위의 동아리 연락처로 직접 연락<br>
-                2. 학생지원팀을 통한 문의<br>
-                3. 동아리 SNS 계정으로 DM 발송<br>
-                4. 동아리방 직접 방문
-            </div>
-        </div>
-    `;
-}
-
-// 연락처 모달
-function showContactModal(contact) {
-    closeModal();
-    setTimeout(() => {
-        const overlay = document.getElementById('modalOverlay');
-        const content = document.getElementById('modalContent');
-        const actions = document.getElementById('modalActions');
-        
-        content.innerHTML = `
-            <h2 class="modal-club-name">📞 연락하기</h2>
-            <div class="modal-section">
-                <div class="modal-section-title">📱 연락처 정보</div>
-                <div class="modal-section-content">${contact}</div>
-            </div>
-            <div class="modal-section">
-                <div class="modal-section-title">💡 연락 시 참고사항</div>
-                <div class="modal-section-content">
-                    • 정중한 언어로 문의해주세요<br>
-                    • 본인 소개와 문의 목적을 명확히 해주세요<br>
-                    • 가입 의사가 있다면 성의를 보여주세요<br>
-                    • 응답이 늦어도 기다려주세요
-                </div>
-            </div>
-        `;
-        
-        actions.innerHTML = `
-            <button class="modal-btn secondary" onclick="closeModal()">닫기</button>
-            <button class="modal-btn primary" onclick="copyToClipboard('${contact}')">📋 연락처 복사</button>
-        `;
-        
-        overlay.classList.add('active');
-    }, 300);
-}
-
-// 클립보드 복사
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showToast('연락처가 복사되었습니다!', 'success');
-    });
-}
-
-// 리뷰 제출
-function submitReview(clubId) {
-    showToast('리뷰가 등록되었습니다! (데모 버전)', 'success');
-}
-
-// 모달 닫기
-function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
-}
-
-// 동아리 추가 요청 모달
-function showAddClubModal() {
-    const overlay = document.getElementById('modalOverlay');
-    const content = document.getElementById('modalContent');
-    const actions = document.getElementById('modalActions');
-    
-    content.innerHTML = `
-        <h2 class="modal-club-name">📝 동아리 추가 요청</h2>
-        <span class="modal-club-category">새 동아리 등록</span>
-        <div class="modal-section">
-            <div class="modal-section-title">📋 필요한 정보</div>
-            <div class="modal-section-content">
-                • 동아리명<br>
-                • 활동 분야 (학술/체육/예술/봉사/취미/종교)<br>
-                • 동아리 소개 (활동 내용, 특징 등)<br>
-                • 회비 정보<br>
-                • 연락처 (인스타그램, 전화번호 등)<br>
-                • 관련 링크 (에브리타임, 홈페이지 등)<br>
-                • 현재 회원 수<br>
-                • 모임 시간 및 장소
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">📞 문의처</div>
-            <div class="modal-section-content">
-                • 학생지원팀: 053-850-3114<br>
-                • 이메일: student@cu.ac.kr<br>
-                • 또는 기존 동아리 담당자에게 연락
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">⚠️ 등록 요건</div>
-            <div class="modal-section-content">
-                • 학교 공식 승인을 받은 동아리<br>
-                • 최소 10명 이상의 회원<br>
-                • 정기적인 활동 계획<br>
-                • 담당 교수 또는 지도교사 필요
-            </div>
-        </div>
-    `;
-    
-    actions.innerHTML = `
-        <button class="modal-btn secondary" onclick="closeModal()">닫기</button>
-        <a href="tel:053-850-3114" class="modal-btn primary">📞 전화 문의</a>
-        <a href="mailto:student@cu.ac.kr" class="modal-btn success">✉️ 이메일 문의</a>
-    `;
-    
-    overlay.classList.add('active');
-}
-
-// 이벤트 리스너 설정
-function setupEventListeners() {
-    // 검색 기능
-    document.getElementById('searchInput').addEventListener('input', debounce(filterClubs, 300));
-    
-    // 고급 검색 토글
-    document.getElementById('advancedToggle').addEventListener('click', function() {
-        const advanced = document.getElementById('advancedSearch');
-        advanced.classList.toggle('active');
-        this.textContent = advanced.classList.contains('active') ? '고급 검색 ▲' : '고급 검색 ▼';
-    });
-    
-    // 고급 검색 필터
-    ['feeRange', 'minRating', 'activityDay'].forEach(id => {
-        document.getElementById(id).addEventListener('change', filterClubs);
-    });
-    
-    // 필터 버튼
-    document.querySelectorAll('.filter-tag').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.filter-tag').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            currentFilter = this.dataset.category;
-            currentPage = 1;
-            filterClubs();
-        });
-    });
-    
-    // 정렬 옵션
-    document.getElementById('sortSelect').addEventListener('change', function() {
-        currentSort = this.value;
-        currentPage = 1;
-        createClubCards();
-    });
-    
-    // 보기 모드
-    document.querySelectorAll('.view-mode-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            currentView = this.dataset.view;
-            
-            const grid = document.getElementById('clubsGrid');
-            grid.className = `clubs-grid ${currentView}-view`;
-        });
-    });
-    
-    // 상단 네비게이션
-    document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-    document.getElementById('favoritesToggle').addEventListener('click', toggleFavorites);
-    document.getElementById('helpToggle').addEventListener('click', showHelp);
-    
-    // 동아리 추가 버튼
-    document.getElementById('addClubBtn').addEventListener('click', showAddClubModal);
-    
-    // 모달 닫기
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('modalOverlay').addEventListener('click', function(e) {
-        if (e.target === this) closeModal();
-    });
-    
-    // ESC 키로 모달 닫기
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeModal();
-    });
-    
-    // FAQ 아코디언
-    document.querySelectorAll('.faq-question').forEach(question => {
-        question.addEventListener('click', function() {
-            const item = this.parentElement;
-            item.classList.toggle('active');
-        });
-    });
-    
-    // 추천 카드 클릭
-    document.querySelectorAll('.recommendation-card').forEach(card => {
-        card.addEventListener('click', function() {
-            const clubId = parseInt(this.dataset.clubId);
-            const club = clubsData.find(c => c.id === clubId);
-            if (club) showModal(club);
-        });
-    });
-}
-
-// 디바운스 함수
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// 필터링
-function filterClubs() {
-    currentPage = 1;
-    createClubCards();
-    
-    // 빈 상태 처리
-    const filteredCount = filterAndSortClubs().length;
-    const emptyState = document.getElementById('emptyState');
-    const grid = document.getElementById('clubsGrid');
-    
-    if (filteredCount === 0) {
-        emptyState.style.display = 'block';
-        grid.style.display = 'none';
-    } else {
-        emptyState.style.display = 'none';
-        grid.style.display = 'grid';
-    }
-}
-
-// 다크모드 토글
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    const isDark = document.body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDark);
-    
-    const btn = document.getElementById('darkModeToggle');
-    btn.textContent = isDark ? '☀️ 라이트모드' : '🌙 다크모드';
-    
-    showToast(`${isDark ? '다크' : '라이트'} 모드로 변경되었습니다.`, 'success');
-}
-
-// 즐겨찾기 토글
-function toggleFavorites() {
-    showFavorites = !showFavorites;
-    const mainContent = document.querySelector('.main-content');
-    const favoritesSection = document.getElementById('favoritesSection');
-    
-    if (showFavorites) {
-        mainContent.style.display = 'none';
-        favoritesSection.classList.add('active');
-        createClubCards();
-        document.getElementById('favoritesToggle').textContent = '🏠 전체보기';
-    } else {
-        mainContent.style.display = 'block';
-        favoritesSection.classList.remove('active');
-        createClubCards();
-        document.getElementById('favoritesToggle').textContent = '⭐ 즐겨찾기';
-    }
-}
-
-// 도움말 표시
-function showHelp() {
-    const overlay = document.getElementById('modalOverlay');
-    const content = document.getElementById('modalContent');
-    const actions = document.getElementById('modalActions');
-    
-    content.innerHTML = `
-        <h2 class="modal-club-name">❓ 도움말</h2>
-        <div class="modal-section">
-            <div class="modal-section-title">🔍 검색 및 필터</div>
-            <div class="modal-section-content">
-                • 상단 검색창에 동아리명이나 키워드를 입력하세요<br>
-                • 고급 검색으로 회비, 평점, 활동 요일별 필터링 가능<br>
-                • 카테고리 버튼으로 분야별 필터링<br>
-                • 정렬 옵션으로 원하는 순서로 정렬
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">❤️ 즐겨찾기 및 비교</div>
-            <div class="modal-section-content">
-                • 하트 버튼으로 즐겨찾기 추가/제거<br>
-                • 비교 버튼으로 최대 3개 동아리 비교 가능<br>
-                • 상단 즐겨찾기 버튼으로 즐겨찾기만 보기
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">📱 보기 모드</div>
-            <div class="modal-section-content">
-                • 그리드 뷰: 기본 카드 형태<br>
-                • 리스트 뷰: 가로로 긴 목록 형태<br>
-                • 컴팩트 뷰: 작은 카드로 더 많이 보기
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">💡 기타 기능</div>
-            <div class="modal-section-content">
-                • 다크모드/라이트모드 전환<br>
-                • 랜덤 동아리 추천<br>
-                • 맨 위로 스크롤<br>
-                • 동아리 추가 요청
-            </div>
-        </div>
-    `;
-    
-    actions.innerHTML = `
-        <button class="modal-btn primary" onclick="closeModal()">확인</button>
-    `;
-    
-    overlay.classList.add('active');
-}
-
-// 랜덤 동아리 표시
-function toggleRandomClub() {
-    const randomClub = clubsData[Math.floor(Math.random() * clubsData.length)];
-    showModal(randomClub);
-    showToast('랜덤 동아리를 추천해드려요!', 'success');
-}
-
-// 맨 위로 스크롤
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-// 문의하기
-function showContact() {
-    const overlay = document.getElementById('modalOverlay');
-    const content = document.getElementById('modalContent');
-    const actions = document.getElementById('modalActions');
-    
-    content.innerHTML = `
-        <h2 class="modal-club-name">💬 문의하기</h2>
-        <div class="modal-section">
-            <div class="modal-section-title">📞 학교 연락처</div>
-            <div class="modal-section-content">
-                • 학생지원팀: 053-850-3114<br>
-                • 이메일: student@cu.ac.kr<br>
-                • 팩스: 053-850-3115
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">🕐 운영시간</div>
-            <div class="modal-section-content">
-                • 평일: 09:00 - 18:00<br>
-                • 점심시간: 12:00 - 13:00<br>
-                • 주말 및 공휴일: 휴무
-            </div>
-        </div>
-        <div class="modal-section">
-            <div class="modal-section-title">💡 자주 문의하는 내용</div>
-            <div class="modal-section-content">
-                • 동아리 가입 문의<br>
-                • 새 동아리 등록 신청<br>
-                • 동아리 활동 승인 문의<br>
-                • 동아리방 사용 문의
-            </div>
-        </div>
-    `;
-    
-    actions.innerHTML = `
-        <button class="modal-btn secondary" onclick="closeModal()">닫기</button>
-        <a href="tel:053-850-3114" class="modal-btn primary">📞 전화걸기</a>
-        <a href="mailto:student@cu.ac.kr" class="modal-btn success">✉️ 이메일 보내기</a>
-    `;
-    
-    overlay.classList.add('active');
-}
-
-// 토스트 알림 표시
-function showToast(message, type = 'success') {
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    
-    toastMessage.textContent = message;
-    toast.className = `toast ${type}`;
-    toast.classList.add('show');
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
-}
-
-// 실시간 통계 업데이트 (시뮬레이션)
-function updateRealTimeStats() {
-    setInterval(() => {
-        const totalViewsElement = document.getElementById('totalViews');
-        let currentViews = parseInt(totalViewsElement.textContent.replace(/,/g, ''));
-        currentViews += Math.floor(Math.random() * 3);
-        totalViewsElement.textContent = currentViews.toLocaleString();
-        localStorage.setItem('totalViews', currentViews.toString());
-    }, 30000); // 30초마다 업데이트
-}
-
-// 키보드 단축키
-document.addEventListener('keydown', function(e) {
-    // Ctrl/Cmd + K: 검색 포커스
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        document.getElementById('searchInput').focus();
-    }
-    
-    // Ctrl/Cmd + D: 다크모드 토글
-    if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-        e.preventDefault();
-        toggleDarkMode();
-    }
-    
-    // Ctrl/Cmd + F: 즐겨찾기 토글
-    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-        e.preventDefault();
-        toggleFavorites();
-    }
-});
-
-// 스크롤 이벤트 (무한 스크롤 등)
-window.addEventListener('scroll', function() {
-    const fab = document.querySelector('.fab');
-    if (window.scrollY > 300) {
-        fab.style.opacity = '1';
-    } else {
-        fab.style.opacity = '0.7';
-    }
-});
-
-// 페이지 가시성 변경 감지
-document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-        document.title = '💤 DCU 동아리 - 잠시 후 돌아오세요!';
-    } else {
-        document.title = 'DCU 동아리 - 대구가톨릭대학교 동아리 소개';
-        // 포커스 복귀 시 통계 업데이트
-        updateStats();
-    }
-});
-
-// 오프라인/온라인 상태 감지
-window.addEventListener('online', function() {
-    showToast('인터넷에 연결되었습니다.', 'success');
-});
-
-window.addEventListener('offline', function() {
-    showToast('인터넷 연결이 끊어졌습니다.', 'error');
-});
-
-// 브라우저 뒤로가기 처리
-window.addEventListener('popstate', function(e) {
-    if (document.getElementById('modalOverlay').classList.contains('active')) {
-        closeModal();
-    }
-});
-
-// 모바일 터치 이벤트
-let touchStartY = 0;
-let touchEndY = 0;
-
-document.addEventListener('touchstart', function(e) {
-    touchStartY = e.changedTouches[0].screenY;
-});
-
-document.addEventListener('touchend', function(e) {
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-});
-
-function handleSwipe() {
-    const swipeThreshold = 100;
-    const diff = touchStartY - touchEndY;
-    
-    // 위로 스와이프 (새로고침)
-    if (diff > swipeThreshold) {
-        // Pull to refresh 기능 (여기서는 단순히 통계 업데이트)
-        updateStats();
-        showToast('데이터를 새로고침했습니다.', 'success');
-    }
-}
-
-// 웹 워커를 통한 백그라운드 작업 (브라우저 지원 시)
-if (typeof Worker !== 'undefined') {
-    // 웹 워커 코드는 실제 구현에서 별도 파일로 분리
-    console.log('웹 워커를 지원하는 브라우저입니다.');
-}
-
-// 서비스 워커 등록 (PWA 기능)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        // 실제 구현에서는 별도의 서비스 워커 파일이 필요
-        console.log('서비스 워커를 지원하는 브라우저입니다.');
-    });
-}
-
-// 성능 측정
-if ('performance' in window) {
-    window.addEventListener('load', function() {
-        setTimeout(() => {
-            const perfData = performance.timing;
-            const loadTime = perfData.loadEventEnd - perfData.navigationStart;
-            console.log(`페이지 로드 시간: ${loadTime}ms`);
-        }, 0);
-    });
-}
-
-// 에러 처리
-window.addEventListener('error', function(e) {
-    console.error('오류 발생:', e.error);
-    showToast('일시적인 오류가 발생했습니다.', 'error');
-});
-
-// 브라우저 호환성 확인
-function checkBrowserSupport() {
-    const features = {
-        localStorage: typeof Storage !== 'undefined',
-        flexbox: CSS.supports('display', 'flex'),
-        grid: CSS.supports('display', 'grid'),
-        transform: CSS.supports('transform', 'translateX(0)'),
-        animation: CSS.supports('animation', 'none')
-    };
-    
-    const unsupported = Object.entries(features)
-        .filter(([feature, supported]) => !supported)
-        .map(([feature]) => feature);
-    
-    if (unsupported.length > 0) {
-        console.warn('지원되지 않는 기능:', unsupported);
-        showToast('일부 기능이 제한될 수 있습니다.', 'warning');
-    }
-}
-
-// 초기화 완료 후 실행
-document.addEventListener('DOMContentLoaded', function() {
-    checkBrowserSupport();
-    updateRealTimeStats();
-    
-    // 로딩 완료 후 스피너 숨기기
-    setTimeout(() => {
-        const spinner = document.getElementById('loadingSpinner');
-        if (spinner) spinner.style.display = 'none';
-    }, 1000);
-    
-    console.log('DCU 동아리 사이트가 성공적으로 로드되었습니다! 🎓');
-});
-
-// 개발자 도구 감지 (선택사항)
-let devtools = {
-    open: false,
-    orientation: null
-};
-
-setInterval(() => {
-    if (window.outerHeight - window.innerHeight > 150) {
-        if (!devtools.open) {
-            devtools.open = true;
-            console.log('🔧 개발자 도구가 열렸습니다. 사이트 개선에 관심이 있으시다면 student@cu.ac.kr로 연락해주세요!');
-        }
-    } else {
-        devtools.open = false;
-    }
-}, 500);
-
-// 사이트 통계 수집 (익명)
-function collectAnalytics() {
-    const analytics = {
-        timestamp: Date.now(),
-        userAgent: navigator.userAgent,
-        screenResolution: `${screen.width}x${screen.height}`,
-        viewportSize: `${window.innerWidth}x${window.innerHeight}`,
-        favorites: favorites.length,
-        visitDuration: Date.now() - performance.timing.navigationStart
-    };
-    
-    // 실제 구현에서는 서버로 전송
-    localStorage.setItem('siteAnalytics', JSON.stringify(analytics));
-}
-
-// 페이지 언로드 시 정리
-window.addEventListener('beforeunload', function() {
-    collectAnalytics();
-});
-
-// 클립보드 API 지원 확인
-if (!navigator.clipboard) {
-    // 폴백 함수 정의
-    function fallbackCopyToClipboard(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showToast('연락처가 복사되었습니다!', 'success');
-        } catch (err) {
-            showToast('복사에 실패했습니다.', 'error');
-        }
-        document.body.removeChild(textArea);
-    }
-    
-    // 클립보드 함수 재정의
-    window.copyToClipboard = fallbackCopyToClipboard;
-}
     </script>
 </body>
-</html>reviews">리뷰 (<span id="reviewCount">0</span>)</button>
-                <button class="modal-tab" data-tab="
+</html>
