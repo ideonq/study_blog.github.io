@@ -796,27 +796,36 @@ int main() {
             }
         }
 
-        // 이벤트 리스너
-        codeEditor.addEventListener('input', () => {
+        // 이벤트 리스너 (안전하게 수정)
+        document.addEventListener('DOMContentLoaded', function() {
+            // 요소들이 존재하는지 확인
+            if (!codeEditor || !codeDisplay || !lineNumbers) {
+                console.error('필수 요소들을 찾을 수 없습니다');
+                return;
+            }
+
+            // 이벤트 리스너 등록
+            codeEditor.addEventListener('input', function() {
+                updateLineNumbers();
+                updateHighlighting();
+            });
+
+            codeEditor.addEventListener('scroll', syncScroll);
+            codeEditor.addEventListener('keydown', handleKeyDown);
+
+            // 초기화
             updateLineNumbers();
             updateHighlighting();
-        });
-        codeEditor.addEventListener('scroll', syncScroll);
-        codeEditor.addEventListener('keydown', handleKeyDown);
+            setStatus('IDE 준비 완료');
 
-        // 초기화
-        updateLineNumbers();
-        updateHighlighting();
-        setStatus('IDE 준비 완료');
-
-        // 자동 저장 (로컬스토리지는 사용할 수 없으므로 세션 저장)
-        let autoSaveTimer;
-        codeEditor.addEventListener('input', () => {
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(() => {
-                // 실제로는 여기서 서버에 저장하거나 다른 저장 방식 사용
-                setStatus('자동 저장됨');
-            }, 2000);
+            // 자동 저장
+            let autoSaveTimer;
+            codeEditor.addEventListener('input', function() {
+                clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(function() {
+                    setStatus('자동 저장됨');
+                }, 2000);
+            });
         });
 
         // 브라우저 새로고침 경고
