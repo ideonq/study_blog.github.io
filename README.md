@@ -1,8 +1,8 @@
 # 💻 Tech Learning Archive
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=YOUR_GITHUB_URL&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
-![GitHub last commit](https://img.shields.io/github/last-commit/YOUR_USERNAME/YOUR_REPO)
-![GitHub repo size](https://img.shields.io/github/repo-size/YOUR_USERNAME/YOUR_REPO)
+![GitHub last commit](https://img.shields.io/github/last-commit/xxxibgdragon/YOUR_REPO)
+![GitHub repo size](https://img.shields.io/github/repo-size/xxxibgdragon/YOUR_REPO)
 
 > 대학에서 배우는 컴퓨터공학 지식과 기술을 기록하는 저장소입니다.
 
@@ -91,8 +91,8 @@
 
 ## 📊 GitHub Stats
 
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&show_icons=true&theme=radical)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_USERNAME&layout=compact&theme=radical)
+![GitHub stats](https://github-readme-stats.vercel.app/api?username=xxxibgdragon&show_icons=true&theme=radical)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=xxxibgdragon&layout=compact&theme=radical)
 
 ## ✍️ 최근 게시글
 
