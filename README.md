@@ -6,6 +6,8 @@
 
 > 대학에서 배우는 컴퓨터공학 지식과 기술을 기록하는 저장소입니다.
 
+https://xxxibgdragn.github.io/study_blog.github.io/
+
 ## 📌 About
 
 안녕하세요! 컴퓨터공학을 전공하며 배우고 경험하는 기술들을 체계적으로 정리하는 공간입니다.
