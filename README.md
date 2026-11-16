@@ -6,7 +6,7 @@
 
 > 대학에서 배우는 컴퓨터공학 지식과 기술을 기록하는 저장소입니다.
 
-https://xxxibgdragn.github.io/study_blog.github.io/
+https://ideonq.github.io/study_blog.github.io/
 
 ## 📌 About
 
